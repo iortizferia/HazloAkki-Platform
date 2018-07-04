@@ -8,21 +8,23 @@
                 </a>
             </div>
             <div class="card-body">
-                <p class="text-center py-2">PASSWORD RESET</p>
+                <p class="text-center py-2">RESTABLECIMIENTO DE CONTRASEÑA</p>
                 <form [formGroup]="valForm" class="form-validate" role="form" name="recoverForm" novalidate="" (submit)="submitForm($event, valForm.value)">
-                    <p class="text-center">Fill with your mail to receive instructions on how to reset your password.</p>
-                    <div class="form-group">
-                        <label class="text-muted">Email address</label>
+                    <p class="text-center">Introduce tu correo electrónico para recibir instrucciones sobre cómo restablecer su contraseña.</p>
+                    <div class="form-group py-2">
+                        <label class="text-muted">Correo electrónico</label>
                         <div class="input-group with-focus">
-                            <input class="form-control border-right-0" type="email" name="email" placeholder="Enter email" autocomplete="off" formControlName="email" />
+                            <input class="form-control border-right-0" type="email" name="email" autocomplete="off" formControlName="email" />
                             <div class="input-group-append">
                                 <span class="input-group-text fa fa-envelope text-muted bg-transparent border-left-0"></span>
                             </div>
                         </div>
-                        <div class="text-danger" *ngIf="valForm.controls['email'].hasError('required') && (valForm.controls['email'].dirty || valForm.controls['email'].touched)">This field is required</div>
-                        <div class="text-danger" *ngIf="valForm.controls['email'].hasError('email') && (valForm.controls['email'].dirty || valForm.controls['email'].touched)">This field must be a valid email address</div>
+                        <div class="text-danger" *ngIf="valForm.controls['email'].hasError('required') && 
+                        (valForm.controls['email'].dirty || valForm.controls['email'].touched)">Este campo es obligatorio</div>
+                        <div class="text-danger" *ngIf="valForm.controls['email'].hasError('email') && 
+                        (valForm.controls['email'].dirty || valForm.controls['email'].touched)">Formato de correo no es válido</div>
                     </div>
-                    <button class="btn btn-danger btn-block" type="submit">Reset</button>
+                    <button class="btn btn-danger btn-block" type="submit">Restablecer</button>
                 </form>
             </div>
         </div>

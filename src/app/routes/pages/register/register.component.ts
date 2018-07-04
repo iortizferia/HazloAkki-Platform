@@ -10,12 +10,12 @@ import { CustomValidators } from 'ng2-validation';
 })
 export class RegisterComponent implements OnInit {
 
-    valForm: FormGroup;
+    registerForm: FormGroup;
     passwordForm: FormGroup;
 
     constructor(public settings: SettingsService, fb: FormBuilder) {
 
-        let password = new FormControl('', Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9]{6,10}$')]));
+        let password = new FormControl('', Validators.compose([Validators.required]));
         let certainPassword = new FormControl('', [Validators.required, CustomValidators.equalTo(password)]);
 
         this.passwordForm = fb.group({
@@ -23,7 +23,9 @@ export class RegisterComponent implements OnInit {
             'confirmPassword': certainPassword
         });
 
-        this.valForm = fb.group({
+        this.registerForm = fb.group({
+            'name': [null, Validators.required],
+            'lastname': [null, Validators.required],
             'email': [null, Validators.compose([Validators.required, CustomValidators.email])],
             'accountagreed': [null, Validators.required],
             'passwordGroup': this.passwordForm
@@ -32,14 +34,14 @@ export class RegisterComponent implements OnInit {
 
     submitForm($ev, value: any) {
         $ev.preventDefault();
-        for (let c in this.valForm.controls) {
-            this.valForm.controls[c].markAsTouched();
+        for (let c in this.registerForm.controls) {
+            this.registerForm.controls[c].markAsTouched();
         }
         for (let c in this.passwordForm.controls) {
             this.passwordForm.controls[c].markAsTouched();
         }
 
-        if (this.valForm.valid) {
+        if (this.registerForm.valid) {
             console.log('Valid!');
             console.log(value);
         }

@@ -21,8 +21,8 @@ export class SettingsService {
         // App Settings
         // -----------------------------------
         this.app = {
-            name: 'Angle',
-            description: 'Angular Bootstrap Admin Template',
+            name: 'HazloAkki',
+            description: 'Simplemente la publicidad a otro nivel',
             year: ((new Date()).getFullYear())
         };
 
