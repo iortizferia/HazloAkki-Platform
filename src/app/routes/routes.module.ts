@@ -6,12 +6,14 @@ import { PagesModule } from './pages/pages.module';
 
 import { menu } from './menu';
 import { routes } from './routes';
+import { ModalsModule } from '../modals/modals.module';
 
 @NgModule({
     imports: [
-        SharedModule,
+        SharedModule,        
         RouterModule.forRoot(routes),
-        PagesModule
+        PagesModule,
+        ModalsModule
     ],
     declarations: [],
     exports: [

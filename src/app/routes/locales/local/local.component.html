@@ -1,0 +1,278 @@
+<div class="content-heading">
+  Locales
+  <div class="ml-auto">
+    <button class="btn btn-primary" type="button" (click)="showLocalModal()">
+      <i style="padding-right:5px" class="icon-plus fa-lg fa-align-left"></i>
+      <span>Agregar local</span>
+    </button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xl-12 col-lg-12">
+    <div class="form-group">
+      <input class="form-control" placeholder="Buscar local por nombre" />
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xl-4 col-lg-6">
+    <div class="card b">
+      <div class="card-header">
+        <div class="float-right">
+          <div class="badge badge-success">Activo</div>
+        </div>
+        <h4 class="m-0">Taquería el gallo</h4>
+        <small class="text-muted">Av. Insurgentes sur y Av. Santa Teresa</small>
+      </div>
+      <div class="card-body">
+        <div class="d-flex align-items-center">
+          <div class="w-100">
+            <div tooltip="Health">
+              <div class="progress progress-xs m-0">
+                <progressbar class="progress-xs m-0" type="warning" value="22"></progressbar>
+              </div>
+            </div>
+          </div>
+          <div class="wd-xxs text-right">
+            <div class="text-bold text-muted">22%</div>
+          </div>
+        </div>
+      </div>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>
+              <strong>Horario</strong>
+            </td>
+            <td>6:00 AM - 7:00PM</td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Trabajadores</strong>
+            </td>
+            <td>
+              <a class="inline" href="#">
+                <img class="rounded-circle thumb24" src="assets/img/user/02.jpg" alt="project member" />
+              </a>
+              <a class="inline" href="#">
+                <img class="rounded-circle thumb24" src="assets/img/user/04.jpg" alt="project member" />
+              </a>
+              <a class="inline" href="#">
+                <img class="rounded-circle thumb24" src="assets/img/user/05.jpg" alt="project member" />
+              </a>
+              <a class="inline" href="#">
+                <img class="rounded-circle thumb24" src="assets/img/user/06.jpg" alt="project member" />
+              </a>
+              <a class="inline" href="#">
+                <strong>+5</strong>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Gerente</strong>
+            </td>
+            <td>
+              <a tooltip="Team leader">
+                <img class="rounded-circle thumb24" src="assets/img/user/03.jpg" alt="project member" />
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Metricas</strong>
+            </td>
+            <td>
+              <div class="sparkline inline mr-2" [sparkline]="sparkOptionsInfo" values="20,80"></div>
+              <div class="sparkline inline mr-2" [sparkline]="sparkOptionsSuccess" values="60,40"></div>
+              <div class="sparkline inline" [sparkline]="sparkOptionsWarning" values="90,10"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="card-footer text-center bt0">
+        <button class="btn btn-secondary pull-left" type="button">Eliminar</button>
+        <button class="btn btn-secondary pull-right" type="button">Editar</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-4 col-lg-6">
+    <div class="card b">
+      <div class="card-header">
+        <div class="float-right">
+          <div class="badge badge-success">Activo</div>
+        </div>
+        <h4 class="m-0">Taquería el gallo</h4>
+        <small class="text-muted">Av. Insurgentes sur y Av. Santa Teresa</small>
+      </div>
+      <div class="card-body">
+        <div class="d-flex align-items-center">
+          <div class="w-100">
+            <div tooltip="Health">
+              <div class="progress progress-xs m-0">
+                <progressbar class="progress-xs m-0" type="warning" value="22"></progressbar>
+              </div>
+            </div>
+          </div>
+          <div class="wd-xxs text-right">
+            <div class="text-bold text-muted">22%</div>
+          </div>
+        </div>
+      </div>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>
+              <strong>Horario</strong>
+            </td>
+            <td>6:00 AM - 7:00PM</td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Trabajadores</strong>
+            </td>
+            <td>
+              <a class="inline" href="#">
+                <img class="rounded-circle thumb24" src="assets/img/user/02.jpg" alt="project member" />
+              </a>
+              <a class="inline" href="#">
+                <img class="rounded-circle thumb24" src="assets/img/user/04.jpg" alt="project member" />
+              </a>
+              <a class="inline" href="#">
+                <img class="rounded-circle thumb24" src="assets/img/user/05.jpg" alt="project member" />
+              </a>
+              <a class="inline" href="#">
+                <img class="rounded-circle thumb24" src="assets/img/user/06.jpg" alt="project member" />
+              </a>
+              <a class="inline" href="#">
+                <strong>+5</strong>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Gerente</strong>
+            </td>
+            <td>
+              <a tooltip="Team leader">
+                <img class="rounded-circle thumb24" src="assets/img/user/03.jpg" alt="project member" />
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Metricas</strong>
+            </td>
+            <td>
+              <div class="sparkline inline mr-2" [sparkline]="sparkOptionsInfo" values="20,80"></div>
+              <div class="sparkline inline mr-2" [sparkline]="sparkOptionsSuccess" values="60,40"></div>
+              <div class="sparkline inline" [sparkline]="sparkOptionsWarning" values="90,10"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="card-footer text-center bt0">
+        <button class="btn btn-secondary pull-left" type="button">Eliminar</button>
+        <button class="btn btn-secondary pull-right" type="button">Editar</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-4 col-lg-6">
+    <div class="card b">
+      <div class="card-header">
+        <div class="float-right">
+          <div class="badge badge-success">Activo</div>
+        </div>
+        <h4 class="m-0">Taquería el gallo</h4>
+        <small class="text-muted">Av. Insurgentes sur y Av. Santa Teresa</small>
+      </div>
+      <div class="card-body">
+        <div class="d-flex align-items-center">
+          <div class="w-100">
+            <div tooltip="Health">
+              <div class="progress progress-xs m-0">
+                <progressbar class="progress-xs m-0" type="warning" value="22"></progressbar>
+              </div>
+            </div>
+          </div>
+          <div class="wd-xxs text-right">
+            <div class="text-bold text-muted">22%</div>
+          </div>
+        </div>
+      </div>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>
+              <strong>Horario</strong>
+            </td>
+            <td>6:00 AM - 7:00PM</td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Trabajadores</strong>
+            </td>
+            <td>
+              <a class="inline" href="#">
+                <img class="rounded-circle thumb24" src="assets/img/user/02.jpg" alt="project member" />
+              </a>
+              <a class="inline" href="#">
+                <img class="rounded-circle thumb24" src="assets/img/user/04.jpg" alt="project member" />
+              </a>
+              <a class="inline" href="#">
+                <img class="rounded-circle thumb24" src="assets/img/user/05.jpg" alt="project member" />
+              </a>
+              <a class="inline" href="#">
+                <img class="rounded-circle thumb24" src="assets/img/user/06.jpg" alt="project member" />
+              </a>
+              <a class="inline" href="#">
+                <strong>+5</strong>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Gerente</strong>
+            </td>
+            <td>
+              <a tooltip="Team leader">
+                <img class="rounded-circle thumb24" src="assets/img/user/03.jpg" alt="project member" />
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong>Metricas</strong>
+            </td>
+            <td>
+              <div class="sparkline inline mr-2" [sparkline]="sparkOptionsInfo" values="20,80"></div>
+              <div class="sparkline inline mr-2" [sparkline]="sparkOptionsSuccess" values="60,40"></div>
+              <div class="sparkline inline" [sparkline]="sparkOptionsWarning" values="90,10"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="card-footer text-center bt0">
+        <button class="btn btn-secondary pull-left" type="button">Eliminar</button>
+        <button class="btn btn-secondary pull-right" type="button">Editar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Classc modal -->
+<div class="modal fade" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Classic modal</h4>
+                <button type="button" class="close" aria-label="Close" (click)="classicModal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+            </div>
+        </div>
+    </div>
+</div>

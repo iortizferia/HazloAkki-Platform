@@ -6,6 +6,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { FlotDirective } from './directives/flot/flot.directive';
 import { SparklineDirective } from './directives/sparkline/sparkline.directive';
@@ -24,7 +25,9 @@ import { NowDirective } from './directives/now/now.directive';
         TabsModule.forRoot(),
         CollapseModule.forRoot(),
         BsDropdownModule.forRoot(),
-        ProgressbarModule.forRoot()
+        ProgressbarModule.forRoot(),
+        ModalModule.forRoot(),
+        TabsModule.forRoot()
     ],
     providers: [
         ColorsService
@@ -46,6 +49,8 @@ import { NowDirective } from './directives/now/now.directive';
         BsDropdownModule,
         CollapseModule,
         ProgressbarModule,
+        ModalModule,
+        TabsModule,
         FlotDirective,
         SparklineDirective,
         NowDirective,

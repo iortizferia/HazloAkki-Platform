@@ -1,0 +1,54 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Captura los datos del local</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <tabset>
+    <tab heading="Información general" id="tab1">
+      <form role="form">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>Correo electrónico</label>
+          <input class="form-control" type="email" />
+        </div>
+        <div class="form-group">
+          <label>Telefono</label>
+          <input class="form-control" />
+        </div>
+        <div class="form-group">
+          <label>Celular</label>
+          <input class="form-control" />
+        </div>
+      </form>
+    </tab>
+    <tab heading="Dirección">
+      <form role="form">
+        <div class="row">
+          <div class="col">
+              <div class="form-group">
+                  <label>Dirección</label>
+                  <input class="form-control" value=""/>
+                </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <input class="form-control" placeholder="Latitud" />
+          </div>
+          <div class="col">
+            <input class="form-control" placeholder="Latitud" />
+          </div>
+        </div>
+      </form>
+    </tab>
+    <tab heading="Otros datos">Otros datos</tab>
+  </tabset>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="bsModalRef.hide()">Guardar</button>
+</div>

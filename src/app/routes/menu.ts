@@ -26,9 +26,15 @@ const Dashboard = {
 };
 
 const Register = {
-    text: 'Registrar empresa',
+    text: 'Locales',
     link: '/company',
-    icon: 'icon-plus'
+    icon: 'icon-home',
+    submenu: [
+        {
+            text: 'Mis locales',
+            link: '/locales/local'
+        }
+    ]
 };
 
 const headingMain = {

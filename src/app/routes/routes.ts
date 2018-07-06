@@ -16,7 +16,8 @@ export const routes = [
         children: [
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', loadChildren: './home/home.module#HomeModule' },
-            { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' }
+            { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
+            { path: 'locales', loadChildren: './locales/locales.module#LocalesModule' }
         ]
     },
 
