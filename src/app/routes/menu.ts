@@ -26,12 +26,12 @@ const Dashboard = {
 };
 
 const Register = {
-    text: 'Locales',
+    text: 'Operaciones',
     link: '/company',
-    icon: 'icon-home',
+    icon: 'fa fa-gears',
     submenu: [
         {
-            text: 'Mis locales',
+            text: 'Locales',
             link: '/locales/local'
         }
     ]

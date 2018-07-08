@@ -23,7 +23,7 @@ export class LocalComponent implements OnInit {
       ],
       title: 'Modal with component'
     };
-    this.bsModalRef = this.modalService.show(LocalModalComponent, { initialState });
+    this.bsModalRef = this.modalService.show(LocalModalComponent, Object.assign({}, { class: 'gray modal-lg' }));
     this.bsModalRef.content.closeBtnName = 'Close';
   }
 
