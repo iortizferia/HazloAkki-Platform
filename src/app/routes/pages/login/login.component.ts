@@ -3,6 +3,7 @@ import { SettingsService } from '../../../core/settings/settings.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { CustomValidators } from 'ng2-validation';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
     selector: 'app-login',
@@ -13,7 +14,9 @@ export class LoginComponent implements OnInit {
 
     valForm: FormGroup;
 
-    constructor(public settings: SettingsService, fb: FormBuilder, private route:Router) {
+    constructor(public settings: SettingsService, 
+        fb: FormBuilder, private route:Router,
+        private authService:AuthService) {
 
         this.valForm = fb.group({
             'email': [null, Validators.compose([Validators.required, CustomValidators.email])],
@@ -30,6 +33,11 @@ export class LoginComponent implements OnInit {
         if (this.valForm.valid) {
             console.log('Valid!');
             console.log(value);
+            this.authService.login("myemail","mypwd",false).subscribe(ok=>{
+                console.log("Goog login")
+            },error =>{
+                console.error("Error login", error);
+            })
             this.route.navigate(["home"]);
         }
     }

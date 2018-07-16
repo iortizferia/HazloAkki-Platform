@@ -5,6 +5,11 @@ import { ThemesService } from './themes/themes.service';
 import { MenuService } from './menu/menu.service';
 
 import { throwIfAlreadyLoaded } from './module-import-guard';
+import { ApiPrefixInterceptor } from './interceptors/api-prefix.interceptor';
+import { ErrorHandlerInterceptor } from './interceptors/error-handler.interceptor';
+import { CacheInterceptor } from './interceptors/cache.interceptor';
+import { HttpService } from './http/http.service';
+import { HttpClient } from '@angular/common/http';
 
 @NgModule({
     imports: [
@@ -12,15 +17,20 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
     providers: [
         SettingsService,
         ThemesService,
-        MenuService
+        MenuService,
+        ApiPrefixInterceptor,
+        ErrorHandlerInterceptor,
+        CacheInterceptor,
+        {
+            provide: HttpClient,
+            useClass: HttpService
+        }
     ],
-    declarations: [
-    ],
-    exports: [
-    ]
+    declarations: [],
+    exports: []
 })
 export class CoreModule {
-    constructor( @Optional() @SkipSelf() parentModule: CoreModule) {
+    constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
         throwIfAlreadyLoaded(parentModule, 'CoreModule');
     }
 }
