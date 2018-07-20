@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { SettingsService } from '../../../core/settings/settings.service';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
+import { AccountService } from '../../../core/http/account/account.service';
+import { Account } from '../../../shared/models/account.model';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-register',
@@ -13,7 +16,9 @@ export class RegisterComponent implements OnInit {
     registerForm: FormGroup;
     passwordForm: FormGroup;
 
-    constructor(public settings: SettingsService, fb: FormBuilder) {
+    constructor(public settings: SettingsService, 
+        fb: FormBuilder, private route:Router,
+        private accountService: AccountService) {
 
         let password = new FormControl('', Validators.compose([Validators.required]));
         let certainPassword = new FormControl('', [Validators.required, CustomValidators.equalTo(password)]);
@@ -25,6 +30,7 @@ export class RegisterComponent implements OnInit {
 
         this.registerForm = fb.group({
             'name': [null, Validators.required],
+            'phone': [null],
             'lastname': [null, Validators.required],
             'email': [null, Validators.compose([Validators.required, CustomValidators.email])],
             'accountagreed': [null, Validators.required],
@@ -42,8 +48,20 @@ export class RegisterComponent implements OnInit {
         }
 
         if (this.registerForm.valid) {
-            console.log('Valid!');
-            console.log(value);
+            let newAccount = new Account()
+            newAccount.nombre = value.name;
+            newAccount.apellidos = value.lastname;
+            newAccount.email = value.email;
+            newAccount.password = value.passwordGroup.password;
+            newAccount.telefono = value.phone;
+
+            this.accountService.addAccount(newAccount).subscribe(
+                account => {
+                    console.log("Account was added successfully", account);
+                    this.route.navigate(["login"]);
+                }, error => {
+                    console.error("Ooops! something was wrong", error);
+                });
         }
     }
 
