@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
-import { LocalComponent } from './local/local.component';
+import { BusinessComponent } from './business/business.component';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [ 
-  {path:"local", component: LocalComponent}
+  {path:"business", component: BusinessComponent}
 ];
 @NgModule({
   imports: [
     SharedModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [LocalComponent],
+  declarations: [BusinessComponent],
   exports:[
     RouterModule
   ]
 })
-export class LocalesModule { }
+export class BusinessModule { }

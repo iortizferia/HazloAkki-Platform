@@ -31,8 +31,8 @@ const Register = {
     icon: 'fa fa-gears',
     submenu: [
         {
-            text: 'Locales',
-            link: '/locales/local'
+            text: 'Negocios',
+            link: '/business/business'
         }
     ]
 };

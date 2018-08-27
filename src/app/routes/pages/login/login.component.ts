@@ -31,14 +31,12 @@ export class LoginComponent implements OnInit {
             this.valForm.controls[c].markAsTouched();
         }
         if (this.valForm.valid) {
-            console.log('Valid!');
             console.log(value);
-            this.authService.login("myemail","mypwd",false).subscribe(ok=>{
-                console.log("Goog login")
+            this.authService.login(value.email,value.password,false).subscribe(ok=>{
+                this.route.navigate(["home"]);
             },error =>{
                 console.error("Error login", error);
-            })
-            this.route.navigate(["home"]);
+            })            
         }
     }
 

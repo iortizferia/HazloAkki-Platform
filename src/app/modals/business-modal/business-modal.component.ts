@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
-  selector: 'app-local-modal',
-  templateUrl: './local-modal.component.html'
+  selector: 'app-business-modal',
+  templateUrl: './business-modal.component.html'
 })
-export class LocalModalComponent implements OnInit {
+export class BusinessModalComponent implements OnInit {
 
   title: string;
   closeBtnName: string;

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { LocalModalComponent } from '../../../modals/local-modal/local-modal.component';
+import { BusinessModalComponent } from '../../../modals/business-modal/business-modal.component';
 
 @Component({
-  selector: 'app-local',
-  templateUrl: './local.component.html'
+  selector: 'app-business',
+  templateUrl: './business.component.html'
 })
-export class LocalComponent implements OnInit {
+export class BusinessComponent implements OnInit {
   
   bsModalRef: BsModalRef;
   constructor(private modalService: BsModalService) { }
@@ -23,7 +23,7 @@ export class LocalComponent implements OnInit {
       ],
       title: 'Modal with component'
     };
-    this.bsModalRef = this.modalService.show(LocalModalComponent, Object.assign({}, { class: 'gray modal-lg' }));
+    this.bsModalRef = this.modalService.show(BusinessModalComponent, Object.assign({}, { class: 'gray modal-lg' }));
     this.bsModalRef.content.closeBtnName = 'Close';
   }
 

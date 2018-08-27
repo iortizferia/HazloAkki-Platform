@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { AgmCoreModule } from '@agm/core';
 import { FileUploadModule } from 'ng2-file-upload';
 import { SharedModule } from '../shared/shared.module';
-import { LocalModalComponent } from './local-modal/local-modal.component';
+import { BusinessModalComponent } from './business-modal/business-modal.component';
 
 @NgModule({
   imports: [
@@ -12,8 +12,8 @@ import { LocalModalComponent } from './local-modal/local-modal.component';
       apiKey: 'AIzaSyBNs42Rt_CyxAqdbIBK0a5Ut83QiauESPA'
   })
   ],
-  declarations: [LocalModalComponent],
-  exports:[LocalModalComponent],
-  entryComponents:[LocalModalComponent]
+  declarations: [BusinessModalComponent],
+  exports:[BusinessModalComponent],
+  entryComponents:[BusinessModalComponent]
 })
 export class ModalsModule { }

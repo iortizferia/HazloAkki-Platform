@@ -20,6 +20,7 @@ import { HttpClient } from '@angular/common/http';
         MenuService,
         ApiPrefixInterceptor,
         ErrorHandlerInterceptor,
+        HttpService,
         CacheInterceptor,
         {
             provide: HttpClient,
