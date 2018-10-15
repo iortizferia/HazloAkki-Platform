@@ -9,7 +9,7 @@ import { BusinessModalComponent } from './business-modal/business-modal.componen
     SharedModule,
     FileUploadModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBNs42Rt_CyxAqdbIBK0a5Ut83QiauESPA'
+      apiKey: ''
   })
   ],
   declarations: [BusinessModalComponent],

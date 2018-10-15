@@ -1,6 +1,16 @@
 <div class="content-heading">
-  Mis negocios
+  Negocios
   <div class="ml-auto">
+    <div class="btn-group mr-2" dropdown>
+      <button class="btn dropdown-toggle btn-secondary" type="button" dropdownToggle>Acción
+        <span class="caret"></span>
+      </button>
+      <div *dropdownMenu class="dropdown-menu" role="menu">
+        <a class="dropdown-item" href="#">Eliminar</a>
+        <a class="dropdown-item" href="#">Editar</a>
+        <a class="dropdown-item" href="#">Clonar</a>
+      </div>
+    </div>
     <button class="btn btn-primary" type="button" (click)="showLocalModal()">
       <i style="padding-right:5px" class="icon-plus fa-lg fa-align-left"></i>
       <span>Agregar</span>
@@ -8,63 +18,58 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-xl-12 col-lg-12">
-    <div class="form-group">
-      <input class="form-control" placeholder="Buscar local por nombre" />
+  <div class="col">
+    <div class="card card-default">
+      <div class="card-header">
+        <div class="form-group">
+          <input class="form-control" placeholder="Busca tu negocio por nombre" />
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Imagen</th>
+              <th>Nombre</th>
+              <th>Dirección</th>
+              <th>Horario</th>
+              <th>Responsable</th>
+              <th>Estatus</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="checkbox c-checkbox">
+                  <label>
+                    <input type="checkbox" />
+                    <span class="fa fa-check"></span>
+                  </label>
+                </div>
+              </td>
+              <td>
+                <div class="media">
+                  <img class="img-fluid circle" src="assets/img/business-default.png" alt="Image" />
+                </div>
+              </td>
+              <td>
+                Taqueria el Gallo
+              </td>
+              <td>
+                Av. Insurgentes sur y Av. Santa Teresa
+              </td>
+              <td>10AM-6PM</td>
+              <td>
+                Israel Ortiz Feria
+              </td>
+              <td>
+                <div class="badge badge-success">Activo</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-xl-4 col-lg-6">
-    <div class="card b">
-      <div class="card-header">
-          <img class="mr-2 rounded-circle" width="60" height="60" src="assets/img/pariente_logo.jpg" alt="Image" />
-        <div class="float-right">
-          <div class="badge badge-success">Activo</div>
-        </div>
-        <div class="inline">
-          <h4 class="m-0" >Taquería el gallo</h4>
-          <small class="text-muted">Av. Insurgentes sur y Av. Santa Teresa</small>
-        </div>        
-      </div>
-      <table class="table">
-        <tbody>
-          <tr>
-            <td>
-              <strong>Horario</strong>
-            </td>
-            <td>6:00 AM - 7:00PM</td>
-          </tr>
-          <tr>
-            <td>
-              <strong>Responsable</strong>
-            </td>
-            <td>Israel Ortiz Feria</td>
-          </tr>          
-        </tbody>
-      </table>
-      <div class="card-footer text-center bt0">
-        <button class="btn btn-secondary pull-left" type="button">Eliminar</button>
-        <button class="btn btn-secondary" type="button">Clonar</button>
-        <button class="btn btn-secondary pull-right" type="button">Editar</button>
-      </div>
-    </div>
-  </div>  
-</div>
-
-<!-- Classc modal -->
-<div class="modal fade" bsModal #classicModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Classic modal</h4>
-                <button type="button" class="close" aria-label="Close" (click)="classicModal.hide()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
-            </div>
-        </div>
-    </div>
 </div>

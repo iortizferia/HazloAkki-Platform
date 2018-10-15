@@ -5,7 +5,7 @@
   </button>
 </div>
 <div class="modal-body">
-  <form role="form">
+  <form role="form" novalidate #businessform="ngForm">
     <tabset>
       <tab heading="Datos" id="tab1">
         <div class="row">
@@ -13,6 +13,15 @@
             <div class="form-group">
               <label>Nombre</label>
               <input class="form-control form-control-sm" />
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label>Categoría</label>
+              <select class="form-control form-control-sm">
+                <option selected value="0">Selecciona una categoría</option>
+                <option *ngFor="let category of categories" value="category.idCategoria">{{category.nombre}}</option>
+              </select>
             </div>
           </div>
         </div>
@@ -25,8 +34,8 @@
           </div>
           <div class="col">
             <div class="form-group">
-              <label>Telefono</label>
-              <input class="form-control form-control-sm" />
+              <label>Teléfono</label>
+              <input class="form-control form-control-sm" pattern="[0-9]{10}" maxlength="10" />
             </div>
           </div>
         </div>
@@ -43,184 +52,65 @@
         <div class="row">
           <div class="col-4">
             <div class="form-group">
-              <label>Código postal</label>
-              <input class="form-control form-control-sm" type="number" value="04369" />
-            </div>
-            <div class="form-group">
-              <label>Delegación</label>
-              <input class="form-control form-control-sm" value="Coyoacan" />
-            </div>
-            <div class="form-group">
-              <label>Colonia</label>
-              <select class="form-control form-control-sm" disabled="true">
-                <option selected="" value="1">Santo Domingo</option>
-              </select>
-            </div>
-            <div class="form-group">
               <label>Calle</label>
-              <input class="form-control form-control-sm" value="" />
+              <input class="form-control form-control-sm" name="street" ngModel />
             </div>
             <div class="form-group">
               <label>Número exterior</label>
-              <input class="form-control form-control-sm" type="number" value="" />
+              <input class="form-control form-control-sm" type="number" name="extnum" ngModel />
+            </div>
+            <div class="form-group">
+              <label>Código postal</label>
+              <input class="form-control form-control-sm" type="number" #zipcode (blur)="getLocation(zipcode.value, businessform.value)" />
+            </div>
+            <div class="form-group">
+              <label>Colonia</label>
+              <select class="form-control form-control-sm" name="colonia" ngModel >
+                <option *ngFor="let colonia of currentLocation?.colonias" value="colonia">{{colonia}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Delegación</label>
+              <input class="form-control form-control-sm" name="delegacion" ngModel [(ngModel)]="currentLocation.municipio" />
             </div>
           </div>
           <div class="col-8">
             <label>Selecciona en el mapa la ubicación exacta de tu negocio</label>
-            <agm-map [latitude]="19.432608" [longitude]="-99.133208" style="height: 336px;"></agm-map>
+            <agm-map [(latitude)]="location.lat" [(longitude)]="location.lng" [(zoom)]="location.zoom"
+              [disableDefaultUI]="true" [zoomControl]="true" style="height: 336px;">
+              <agm-marker [(latitude)]="location.marker.lat" [(longitude)]="location.marker.lng" [markerDraggable]="location.marker.draggable"></agm-marker>
+            </agm-map>
           </div>
         </div>
       </tab>
       <tab heading="Servicios">
         <fieldset>
-          <legend>Activa tus métodos de pago</legend>
           <div class="form-group row">
-            <div class="col-lg-4 col-md-10">
-              <div class="d-flex align-items-center mb-3">
-                <div>Efectivo</div>
-                <div class="ml-auto">
-                  <label class="switch switch-lg m-0">
-                    <input type="checkbox"  />
-                    <span></span>
-                  </label>
-                </div>
-              </div>
-              <div class="d-flex align-items-center mb-3">
-                <div>Tarjeta</div>
-                <div class="ml-auto">
-                  <label class="switch switch-lg m-0">
-                    <input type="checkbox"  />
-                    <span></span>
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-10">
-              <div class="d-flex align-items-center mb-3">
-                <div>Monedero electrónico</div>
-                <div class="ml-auto">
-                  <label class="switch switch-lg m-0">
-                    <input type="checkbox"  />
-                    <span></span>
-                  </label>
-                </div>
-              </div>
-              <div class="d-flex align-items-center mb-3">
-                <div>Cheque</div>
-                <div class="ml-auto">
-                  <label class="switch switch-lg m-0">
-                    <input type="checkbox"  />
-                    <span></span>
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-10">
-              <div class="d-flex align-items-center mb-3">
-                <div>Tranferencia(SPEI)</div>
-                <div class="ml-auto">
-                  <label class="switch switch-lg m-0">
-                    <input type="checkbox"  />
-                    <span></span>
-                  </label>
-                </div>
-              </div>
-              <div class="d-flex align-items-center mb-3">
-                <div>Otros</div>
-                <div class="ml-auto">
-                  <label class="switch switch-lg m-0">
-                    <input type="checkbox"  />
-                    <span></span>
-                  </label>
-                </div>
-              </div>
+            <div class="col">
+              <label>Servicios</label>
+              <ngx-select (data)="value" [multiple]="true" [items]="services" [disabled]="false" placeholder="Selecciona todos los servicios que manejas">
+              </ngx-select>
             </div>
           </div>
         </fieldset>
         <fieldset>
-          <legend>Activa tus servicios</legend>
           <div class="form-group row">
-            <div class="col-lg-4 col-md-10">
-              <div class="d-flex align-items-center mb-3">
-                <div>Acepto tarjeta</div>
-                <div class="ml-auto">
-                  <label class="switch switch-lg m-0">
-                    <input type="checkbox"  />
-                    <span></span>
-                  </label>
-                </div>
-              </div>
-              <div class="d-flex align-items-center mb-3">
-                <div>Reservaciones</div>
-                <div class="ml-auto">
-                  <label class="switch switch-lg m-0">
-                    <input type="checkbox"  />
-                    <span></span>
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-10">
-              <div class="d-flex align-items-center mb-3">
-                <div>Comida para llevar</div>
-                <div class="ml-auto">
-                  <label class="switch switch-lg m-0">
-                    <input type="checkbox"  />
-                    <span></span>
-                  </label>
-                </div>
-              </div>
-              <div class="d-flex align-items-center mb-3">
-                <div>Estacionamiento</div>
-                <div class="ml-auto">
-                  <label class="switch switch-lg m-0">
-                    <input type="checkbox"  />
-                    <span></span>
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-10">
-              <div class="d-flex align-items-center mb-3">
-                <div>Servicio a domicilio</div>
-                <div class="ml-auto">
-                  <label class="switch switch-lg m-0">
-                    <input type="checkbox"  />
-                    <span></span>
-                  </label>
-                </div>
-              </div>
-              <div class="d-flex align-items-center mb-3">
-                <div>Internet</div>
-                <div class="ml-auto">
-                  <label class="switch switch-lg m-0">
-                    <input type="checkbox"  />
-                    <span></span>
-                  </label>
-                </div>
-              </div>
+            <div class="col">
+              <label>Métodos de pago</label>
+              <ngx-select (data)="value" [multiple]="true" [items]="pMethods" [disabled]="false" placeholder="Selecciona todos los métodos de pagos que manejas">
+              </ngx-select>
             </div>
           </div>
         </fieldset>
-      </tab>
-      <tab heading="Imagen">
-        <div class="card b text-white">
-          <div class="card-body bg-cover clearfix" style="background-image: url(assets/img/tizoncito-banner.jpg);">
-            <div class="media mt-0 align-items-center">
-              <img class="mr-3 img-thumbnail rounded-circle thumb96" src="assets/img/tako-01.png" alt="Image" />
-              <div class="media-body">
-                <div class="d-flex">
-                  <div>
-                    <h4 class="m-0">Takos el Tizoncito</h4>
-                    <p>Av. Coyoacan, Colonia del Valle, CP 3100</p>
-                    <button class="btn btn-info btn-xs mx-1" type="button">"Editar logo"</button>  
-                    <button class="btn btn-info btn-xs" type="button">"Editar portada"</button>
-                  </div>
-                </div>
-              </div>
+        <fieldset>
+          <div class="form-group row">
+            <div class="col">
+              <label>Tipos de tarjetas</label>
+              <ngx-select (data)="value" [multiple]="true" [items]="cardtypes" [disabled]="false" placeholder="Selecciona todos los tipos de tarjetas que manejas">
+              </ngx-select>
             </div>
           </div>
-        </div>
+        </fieldset>
       </tab>
     </tabset>
   </form>

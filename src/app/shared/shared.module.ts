@@ -7,6 +7,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { NgxSelectModule } from 'ngx-select-ex'
 
 import { FlotDirective } from './directives/flot/flot.directive';
 import { SparklineDirective } from './directives/sparkline/sparkline.directive';
@@ -27,7 +28,8 @@ import { NowDirective } from './directives/now/now.directive';
         BsDropdownModule.forRoot(),
         ProgressbarModule.forRoot(),
         ModalModule.forRoot(),
-        TabsModule.forRoot()
+        TabsModule.forRoot(),
+        NgxSelectModule
     ],
     providers: [
         ColorsService
@@ -56,7 +58,8 @@ import { NowDirective } from './directives/now/now.directive';
         NowDirective,
         ScrollableDirective,
         EasypiechartDirective,
-        VectormapDirective
+        VectormapDirective,
+        NgxSelectModule
     ]
 })
 
