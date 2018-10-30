@@ -8,6 +8,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { NgxSelectModule } from 'ngx-select-ex'
+import { TextMaskModule } from 'angular2-text-mask';
 
 import { FlotDirective } from './directives/flot/flot.directive';
 import { SparklineDirective } from './directives/sparkline/sparkline.directive';
@@ -29,7 +30,8 @@ import { NowDirective } from './directives/now/now.directive';
         ProgressbarModule.forRoot(),
         ModalModule.forRoot(),
         TabsModule.forRoot(),
-        NgxSelectModule
+        NgxSelectModule,
+        TextMaskModule
     ],
     providers: [
         ColorsService
@@ -59,7 +61,8 @@ import { NowDirective } from './directives/now/now.directive';
         ScrollableDirective,
         EasypiechartDirective,
         VectormapDirective,
-        NgxSelectModule
+        NgxSelectModule,
+        TextMaskModule
     ]
 })
 

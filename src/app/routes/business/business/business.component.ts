@@ -1,30 +1,39 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { BusinessModalComponent } from '../../../modals/business-modal/business-modal.component';
+import { Business } from '../../../shared/models/business.model';
 
 @Component({
   selector: 'app-business',
   templateUrl: './business.component.html'
 })
 export class BusinessComponent implements OnInit {
+
+  business:Array<Business>;
   
   bsModalRef: BsModalRef;
   constructor(private modalService: BsModalService) { }
 
   ngOnInit() {
   }
-  showLocalModal() {
+  addNewBusiness() {
     const initialState = {
-      list: [
-        'Open a modal with component',
-        'Pass your data',
-        'Do something else',
-        '...'
-      ],
-      title: 'Modal with component'
+      business:null,
+      class: 'gray modal-lg'
     };
-    this.bsModalRef = this.modalService.show(BusinessModalComponent, Object.assign({}, { class: 'gray modal-lg' }));
+    this.bsModalRef = this.modalService.show(BusinessModalComponent, initialState);
     this.bsModalRef.content.closeBtnName = 'Close';
+  }
+
+  updateBusiness(){
+    const initialState = {
+      business:this.business,
+      class: 'gray modal-lg'
+    };
+  }
+
+  deleteBusiness(){
+
   }
 
 }

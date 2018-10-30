@@ -4,23 +4,24 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body">
-  <form role="form" novalidate #businessform="ngForm">
+<form role="form" novalidate #businessform="ngForm">
+  <div class="modal-body">
     <tabset>
       <tab heading="Datos" id="tab1">
         <div class="row">
           <div class="col">
             <div class="form-group">
               <label>Nombre</label>
-              <input class="form-control form-control-sm" />
+              <input class="form-control form-control-sm" name="name" [(ngModel)]="business.nombre" required [ngClass]="{ 'is-invalid': submitted && businessform.controls.name.errors }" />
             </div>
           </div>
           <div class="col">
             <div class="form-group">
               <label>Categoría</label>
-              <select class="form-control form-control-sm">
+              <select class="form-control form-control-sm" name="category" [(ngModel)]="business.idCategoria" required
+                [ngClass]="{ 'is-invalid': submitted && (businessform.controls.category.errors ||  business.idCategoria==0)}">
                 <option selected value="0">Selecciona una categoría</option>
-                <option *ngFor="let category of categories" value="category.idCategoria">{{category.nombre}}</option>
+                <option *ngFor="let category of categories" [value]="category.idCategoria">{{category.nombre}}</option>
               </select>
             </div>
           </div>
@@ -29,13 +30,15 @@
           <div class="col">
             <div class="form-group">
               <label>Correo electrónico</label>
-              <input class="form-control form-control-sm" type="email" />
+              <input class="form-control form-control-sm" type="email" name="email" [(ngModel)]="business.email"
+                required [ngClass]="{ 'is-invalid': submitted && businessform.controls.email.errors }" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" />
             </div>
           </div>
           <div class="col">
             <div class="form-group">
               <label>Teléfono</label>
-              <input class="form-control form-control-sm" pattern="[0-9]{10}" maxlength="10" />
+              <input class="form-control form-control-sm" [textMask]="{mask: mask}" name="phone" [(ngModel)]="business.telefono"
+                required [ngClass]="{ 'is-invalid': submitted && businessform.controls.phone.errors }" />
             </div>
           </div>
         </div>
@@ -43,7 +46,7 @@
           <div class="col">
             <div class="form-group">
               <label>Descripción</label>
-              <textarea class="form-control" rows="5"></textarea>
+              <textarea class="form-control" rows="5" name="description" [(ngModel)]="business.descripcion" required></textarea>
             </div>
           </div>
         </div>
@@ -53,25 +56,30 @@
           <div class="col-4">
             <div class="form-group">
               <label>Calle</label>
-              <input class="form-control form-control-sm" name="street" ngModel />
+              <input class="form-control form-control-sm" name="street" [(ngModel)]="business.calle" required [ngClass]="{ 'is-invalid': submitted && businessform.controls.street.errors }" />
             </div>
             <div class="form-group">
               <label>Número exterior</label>
-              <input class="form-control form-control-sm" type="number" name="extnum" ngModel />
+              <input class="form-control form-control-sm" type="number" name="extnum" [(ngModel)]="business.numeroExterior"
+                required [ngClass]="{ 'is-invalid': submitted && businessform.controls.extnum.errors }" />
             </div>
             <div class="form-group">
               <label>Código postal</label>
-              <input class="form-control form-control-sm" type="number" #zipcode (blur)="getLocation(zipcode.value, businessform.value)" />
+              <input class="form-control form-control-sm" type="number" name="zipcode" [(ngModel)]="business.codigoPostal"
+                required #zipcode (blur)="getLocation(zipcode.value, businessform.value)" [ngClass]="{ 'is-invalid': submitted && businessform.controls.zipcode.errors }" />
             </div>
             <div class="form-group">
               <label>Colonia</label>
-              <select class="form-control form-control-sm" name="colonia" ngModel >
-                <option *ngFor="let colonia of currentLocation?.colonias" value="colonia">{{colonia}}</option>
+              <select class="form-control form-control-sm" name="colonia" [disabled]="currentLocation?.colonias?.length==1"
+                [(ngModel)]="business.colonia" required [ngClass]="{ 'is-invalid': submitted && businessform.controls.colonia.errors }">
+                <option *ngFor="let colonia of currentLocation?.colonias" [selected]="currentLocation?.colonias?.length==1"
+                  [value]="colonia">{{colonia}}</option>
               </select>
             </div>
             <div class="form-group">
               <label>Delegación</label>
-              <input class="form-control form-control-sm" name="delegacion" ngModel [(ngModel)]="currentLocation.municipio" />
+              <input class="form-control form-control-sm" disabled name="delegacion" [(ngModel)]="business.delegacion"
+                required />
             </div>
           </div>
           <div class="col-8">
@@ -88,8 +96,12 @@
           <div class="form-group row">
             <div class="col">
               <label>Servicios</label>
-              <ngx-select (data)="value" [multiple]="true" [items]="services" [disabled]="false" placeholder="Selecciona todos los servicios que manejas">
+              <ngx-select [multiple]="true" [items]="services.svc" name="services" [(ngModel)]="services.currentServices"
+                optionValueField="id" optionTextField="nombre" placeholder="Selecciona todos los servicios que manejas" required>
               </ngx-select>
+              <div *ngIf="submitted && services.currentServices.length==0">
+                <span class="text-danger">*Selecciona los servicios que manejas en tu negocio</span>
+              </div>
             </div>
           </div>
         </fieldset>
@@ -97,8 +109,12 @@
           <div class="form-group row">
             <div class="col">
               <label>Métodos de pago</label>
-              <ngx-select (data)="value" [multiple]="true" [items]="pMethods" [disabled]="false" placeholder="Selecciona todos los métodos de pagos que manejas">
+              <ngx-select [multiple]="true" [items]="pMethods.methods" name="pmethods" [(ngModel)]="pMethods.currentPmethods" required
+                optionValueField="id" optionTextField="nombre" placeholder="Selecciona todos los métodos de pagos que manejas">
               </ngx-select>
+              <div *ngIf="submitted && pMethods.currentPmethods.length==0">
+                <span class="text-danger">*Selecciona los metodos de pago que manejas en tu negocio</span>
+              </div>
             </div>
           </div>
         </fieldset>
@@ -106,15 +122,19 @@
           <div class="form-group row">
             <div class="col">
               <label>Tipos de tarjetas</label>
-              <ngx-select (data)="value" [multiple]="true" [items]="cardtypes" [disabled]="false" placeholder="Selecciona todos los tipos de tarjetas que manejas">
+              <ngx-select [multiple]="true" [items]="cards.types" name="cardstypes" [(ngModel)]="cards.currentCardTypes" required
+                optionValueField="id" optionTextField="nombre" placeholder="Selecciona todos los tipos de tarjetas que manejas">
               </ngx-select>
+              <div *ngIf="submitted && cards.currentCardTypes.length==0">
+                <span class="text-danger">*Selecciona los tipos de tarjetas que manejas en tu negocio</span>
+              </div>
             </div>
           </div>
         </fieldset>
       </tab>
     </tabset>
-  </form>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-primary" (click)="bsModalRef.hide()">Guardar</button>
-</div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="saveBusiness(businessform)">Guardar</button>
+  </div>
+</form>

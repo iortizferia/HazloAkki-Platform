@@ -11,6 +11,11 @@ import { CardTypeService } from '../../core/http/business/cardtype.service';
 import { MapsAPILoader, AgmMap } from '@agm/core';
 import { Location } from '../../shared/models/map.model';
 import { MXLocation } from '../../shared/models/mxlocation.model';
+import { Business } from '../../shared/models/business.model';
+import { PaymentMethod } from '../../shared/models/payment-method.model';
+import { Service } from '../../shared/models/service.model';
+import { CardType } from '../../shared/models/card-type.model';
+import { NgForm } from '@angular/forms';
 
 declare var google: any;
 
@@ -22,11 +27,15 @@ declare var google: any;
 export class BusinessModalComponent implements OnInit {
 
   categories: Array<Category>;
-  pMethods: Array<Item>;
-  services: Array<Item>;
-  cardtypes: Array<Item>;
-  value: any = {};
+  pMethods = {methods:new Array<PaymentMethod>(), currentPmethods:new Array<string>()};
+  services = {svc:new Array<Service>(), currentServices:new Array<string>()};
+  cards = {types:new Array<CardType>(), currentCardTypes:new Array<string>()};
   currentLocation=new MXLocation();
+
+  business: Business;
+  submitted:boolean;
+
+  mask = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
   //Handling Map
   geocoder: any;
@@ -50,12 +59,13 @@ export class BusinessModalComponent implements OnInit {
     private categoryService: CategoryService,
     private paymentMethodService: PaymentMethodService,
     private serviceService: ServiceService,
-    private cardTypeService: CardTypeService) {
+    private cardTypeService: CardTypeService) {    
 
     this.mapsApiLoader = mapsApiLoader;
     this.mapsApiLoader.load().then(() => {
       this.geocoder = new google.maps.Geocoder();
-    });
+    });    
+    
   }
 
   ngOnInit() {
@@ -65,38 +75,32 @@ export class BusinessModalComponent implements OnInit {
       });
     this.paymentMethodService.getPaymentMethods().subscribe(
       pm => {
-        this.pMethods = pm.map(pm => {
-          let item = new Item();
-          item.id = pm.id;
-          item.text = pm.nombre;
-          return item;
-        });
+        this.pMethods.methods = pm;
       }
     );
     this.serviceService.getServices().subscribe(
       services => {
-        this.services = services.map(serv => {
-          let item = new Item();
-          item.id = serv.id;
-          item.text = serv.nombre;
-          return item;
-        });
+        this.services.svc = services;
       }
     );
     this.cardTypeService.getCardType().subscribe(
       cardtypes => {
-        this.cardtypes = cardtypes.map(cardtype => {
-          let item = new Item();
-          item.id = cardtype.id;
-          item.text = cardtype.nombre;
-          return item;
-        });
+        this.cards.types = cardtypes;
       }
-    );
+    );  
+
+    if(this.business==null){
+      this.business = new Business();
+      this.business.idCategoria = 0;
+    }else{
+      this.business.serviciosList.map((serv => this.services.currentServices.push(serv.id)));
+      this.business.metodoPagoList.map((method => this.pMethods.currentPmethods.push(method.id)));
+      this.business.tipoTarjetaList.map((cardType => this.cards.currentCardTypes.push(cardType.id)));
+    }
   }
 
   getLocation(zipcode: string, form:any) {
-    console.log("Consultando zip code:" + zipcode,form);
+    console.log("Consultando zip code:" + zipcode,form);    
 
     this.mxLocationService.getLocation(zipcode).subscribe(
       location => {
@@ -108,6 +112,8 @@ export class BusinessModalComponent implements OnInit {
           + location.estado+ " " + this.location.country
 
           this.findLocation(full_address);
+          this.business.delegacion = location.municipio;
+          this.business.colonia = location.colonias.length==0?location.colonias[0]:null;
         }
       },
       ERROR => {
@@ -137,6 +143,19 @@ export class BusinessModalComponent implements OnInit {
         alert("No hay suficientes datos para localizar tu ubicación exacta");
       }
     })
+  }
+
+  saveBusiness(form:NgForm){
+    console.log("Consultando zip code:",form);    
+    console.log("Business", this.business);
+    console.log("Services", this.services.currentServices);
+    console.log("Value", this.business.serviciosList);
+    this.submitted=true;
+    //this.bsModalRef.hide()
+
+    if(form.valid){
+      console.log("El formulario es valido");
+    }
   }
 
 }
