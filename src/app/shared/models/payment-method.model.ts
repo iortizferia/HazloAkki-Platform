@@ -3,4 +3,8 @@ export class PaymentMethod{
     nombre:string;
     descripcion:string;
     estatus:boolean;
+    constructor(id:string){
+        this.id = id;
+        this.nombre ="";
+    }
 }

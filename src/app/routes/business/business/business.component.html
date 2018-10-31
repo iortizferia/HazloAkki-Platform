@@ -6,9 +6,10 @@
         <span class="caret"></span>
       </button>
       <div *dropdownMenu class="dropdown-menu" role="menu">
-        <a class="dropdown-item" href="#">Eliminar</a>
-        <a class="dropdown-item" href="#">Editar</a>
-        <a class="dropdown-item" href="#">Clonar</a>
+        <a class="dropdown-item" href="#" [ngClass]="{'disabled':!bSelectedId}" (click)="deleteBusiness()">Eliminar</a>
+        <a class="dropdown-item" href="#" [ngClass]="{'disabled':!bSelectedId}" (click)="editCloneBusiness(0)">Editar</a>
+        <a class="dropdown-item" href="#" [ngClass]="{'disabled':!bSelectedId}" (click)="editCloneBusiness(1)">Clonar</a>
+        <a class="dropdown-item" href="#" [ngClass]="{'disabled':!bSelectedId}" (click)="ofertBusiness()">Crear Oferta</a>
       </div>
     </div>
     <button class="btn btn-primary" type="button" (click)="addNewBusiness()">
@@ -39,12 +40,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr *ngFor="let business of business">
               <td>
-                <div class="checkbox c-checkbox">
+                <div class="c-radio">
                   <label>
-                    <input type="checkbox" />
-                    <span class="fa fa-check"></span>
+                      <input type="radio" name="radio" (click)="bSelectedId=business.idNegocio" />
+                      <span class="fa fa-circle"></span>
                   </label>
                 </div>
               </td>
@@ -53,18 +54,13 @@
                   <img class="img-fluid circle" src="assets/img/business-default.png" alt="Image" />
                 </div>
               </td>
+              <td>{{business.nombre}}</td>
+              <td>{{business.calle +' ' + business.numeroExterior+', '+business.colonia+', '+business.delegacion}} </td>
+              <td>{{business.horario}}</td>
+              <td>{{business.responsable}}</td>
               <td>
-                Taqueria el Gallo
-              </td>
-              <td>
-                Av. Insurgentes sur y Av. Santa Teresa
-              </td>
-              <td>10AM-6PM</td>
-              <td>
-                Israel Ortiz Feria
-              </td>
-              <td>
-                <div class="badge badge-success">Activo</div>
+                <div *ngIf="business.estatus" class="badge badge-success">Activo</div>
+                <div *ngIf="!business.estatus" class="badge badge-danger">Eliminado</div>
               </td>
             </tr>
           </tbody>

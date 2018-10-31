@@ -24,5 +24,13 @@ export class BusinessService {
       map((business:Array<Business>) => business)
     );
   }
+  
+  delete(businessId:string):Observable<Object>{
+    return this.httpService.delete("negocios/"+businessId);
+  }
+
+  update(business:Business):Observable<Object>{
+    return this.httpService.put("negocios/"+business.idNegocio, business);
+  }
 
 }

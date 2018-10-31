@@ -74,7 +74,7 @@ export class AuthService {
 
     if (user) {
       const storage = remember ? localStorage : sessionStorage;
-      storage.setItem(currentUserKey, JSON.stringify(currentUserKey));
+      storage.setItem(currentUserKey, JSON.stringify(user));
     } else {
       sessionStorage.removeItem(currentUserKey);
       localStorage.removeItem(currentUserKey);

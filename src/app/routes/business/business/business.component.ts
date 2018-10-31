@@ -1,7 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { BusinessModalComponent } from '../../../modals/business-modal/business-modal.component';
 import { Business } from '../../../shared/models/business.model';
+import { BusinessService } from '../../../core/http/business/business.service';
+import { User } from '../../../shared/models/user.model';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-business',
@@ -9,31 +12,77 @@ import { Business } from '../../../shared/models/business.model';
 })
 export class BusinessComponent implements OnInit {
 
-  business:Array<Business>;
-  
+  business: Array<Business>;
+  bSelectedId: string;
+
   bsModalRef: BsModalRef;
-  constructor(private modalService: BsModalService) { }
+  constructor(private modalService: BsModalService,
+    private businessService: BusinessService,
+    private authService: AuthService) { }
 
   ngOnInit() {
+    this.authService.pupulate();
+    this.loadBusiness();
   }
+
+  loadBusiness() {
+    let userAccout = this.authService.getCurrentUser();
+    console.log("CurrentUser", userAccout);
+    this.businessService.getByAccount(userAccout.idCuenta).subscribe(
+      business => {
+        console.log("Lista de negocios", business);
+        this.business = business;
+      }
+    );
+  }
+
   addNewBusiness() {
-    const initialState = {
-      business:null,
-      class: 'gray modal-lg'
-    };
-    this.bsModalRef = this.modalService.show(BusinessModalComponent, initialState);
+    let config = new ModalOptions();
+    config.initialState ={business:null};
+    this.showModal(config);
+  }
+
+  showModal(config:ModalOptions){
+    config.class = 'gray modal-lg';
+    this.bsModalRef = this.modalService.show(BusinessModalComponent, config);
     this.bsModalRef.content.closeBtnName = 'Close';
-  }
-
-  updateBusiness(){
-    const initialState = {
-      business:this.business,
-      class: 'gray modal-lg'
+    this.bsModalRef.content.onSaved = (resp) => {
+      console.log("Retornando de modal",resp);
+      if(resp){
+        this.loadBusiness();
+      }
+      this.bsModalRef.hide();
     };
   }
 
-  deleteBusiness(){
-
+  deleteBusiness() {
+    if (this.bSelectedId && this.bSelectedId != null
+      && this.bSelectedId != '') {
+      this.businessService.delete(this.bSelectedId).subscribe(
+        ok => {
+          this.loadBusiness();
+        }
+      );
+    }
   }
 
+  editCloneBusiness(type:number) {
+    if (this.bSelectedId && this.bSelectedId != null
+      && this.bSelectedId != '') {       
+        let bu = this.business.find(b => b.idNegocio===this.bSelectedId);
+        if(type == 1){          
+          bu.idNegocio = null;
+        }
+        console.log("Inicia proceso de "+(bu.idNegocio==null?'clonado':'edición')+"!!");
+        let config = new ModalOptions();
+        config.initialState ={
+          business:Object.assign({}, bu)
+        };
+        this.showModal(config);
+    }
+  }
+
+  ofertBusiness() {
+    console.log("Inicia proceso de oferta")
+  }
 }

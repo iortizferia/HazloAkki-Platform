@@ -54,6 +54,7 @@ export class RegisterComponent implements OnInit {
             newAccount.email = value.email;
             newAccount.password = value.passwordGroup.password;
             newAccount.telefono = value.phone;
+            newAccount.estatus = true;
 
             this.accountService.addAccount(newAccount).subscribe(
                 account => {

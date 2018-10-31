@@ -6,5 +6,5 @@ export class Account{
     telefono:string;
     password:string;
     fecha:string;
-    status:boolean;
+    estatus:boolean;
 }

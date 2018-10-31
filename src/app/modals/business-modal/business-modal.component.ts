@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { MXLocationService } from '../../core/http/utils/location.service';
 import { CategoryService } from '../../core/http/business/category.service';
-import { Item } from '../../shared/models/item.model';
 import { PaymentMethodService } from '../../core/http/business/payment-method.service';
 import { Category } from '../../shared/models/category.model';
 import { ServiceService } from '../../core/http/business/service.service';
@@ -16,6 +15,7 @@ import { PaymentMethod } from '../../shared/models/payment-method.model';
 import { Service } from '../../shared/models/service.model';
 import { CardType } from '../../shared/models/card-type.model';
 import { NgForm } from '@angular/forms';
+import { BusinessService } from '../../core/http/business/business.service';
 
 declare var google: any;
 
@@ -27,15 +27,17 @@ declare var google: any;
 export class BusinessModalComponent implements OnInit {
 
   categories: Array<Category>;
-  pMethods = {methods:new Array<PaymentMethod>(), currentPmethods:new Array<string>()};
-  services = {svc:new Array<Service>(), currentServices:new Array<string>()};
-  cards = {types:new Array<CardType>(), currentCardTypes:new Array<string>()};
-  currentLocation=new MXLocation();
+  pMethods = { methods: new Array<PaymentMethod>(), currentPmethods: new Array<string>() };
+  services = { svc: new Array<Service>(), currentServices: new Array<string>() };
+  cards = { types: new Array<CardType>(), currentCardTypes: new Array<string>() };
+  currentLocation = new MXLocation();
 
   business: Business;
-  submitted:boolean;
+  submitted: boolean;
+  onSaved:any;
 
   mask = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+  timeMask = [/[0-9]/, /\d/,':', /[0-9]/, /\d/];
 
   //Handling Map
   geocoder: any;
@@ -54,18 +56,20 @@ export class BusinessModalComponent implements OnInit {
   @ViewChild(AgmMap) map: AgmMap;
 
   constructor(public bsModalRef: BsModalRef,
+    private modalService: BsModalService,
     public mapsApiLoader: MapsAPILoader,
+    private businessService: BusinessService,
     private mxLocationService: MXLocationService,
     private categoryService: CategoryService,
     private paymentMethodService: PaymentMethodService,
     private serviceService: ServiceService,
-    private cardTypeService: CardTypeService) {    
+    private cardTypeService: CardTypeService) {
 
     this.mapsApiLoader = mapsApiLoader;
     this.mapsApiLoader.load().then(() => {
       this.geocoder = new google.maps.Geocoder();
-    });    
-    
+    });
+
   }
 
   ngOnInit() {
@@ -87,41 +91,43 @@ export class BusinessModalComponent implements OnInit {
       cardtypes => {
         this.cards.types = cardtypes;
       }
-    );  
+    );
 
-    if(this.business==null){
+    console.log("Llegando business", this.business);
+
+    if (this.business == null || !this.business) {
       this.business = new Business();
       this.business.idCategoria = 0;
-    }else{
+    } else {
       this.business.serviciosList.map((serv => this.services.currentServices.push(serv.id)));
       this.business.metodoPagoList.map((method => this.pMethods.currentPmethods.push(method.id)));
       this.business.tipoTarjetaList.map((cardType => this.cards.currentCardTypes.push(cardType.id)));
     }
   }
 
-  getLocation(zipcode: string, form:any) {
-    console.log("Consultando zip code:" + zipcode,form);    
+  getLocation(zipcode: string, form: any) {
+    console.log("Consultando zip code:" + zipcode, form);
+    if (zipcode && zipcode != '') {
+      this.mxLocationService.getLocation(zipcode).subscribe(
+        location => {
+          console.log(location);
+          if (location.municipio) {
+            this.currentLocation = location;
+            let full_address: string = (form.street || "") + form.extnum;
+            full_address = full_address + " " + location.municipio + " "
+              + location.estado + " " + this.location.country
 
-    this.mxLocationService.getLocation(zipcode).subscribe(
-      location => {
-        console.log(location);
-        if (location.municipio) {
-          this.currentLocation = location;
-          let full_address: string = (form.street || "" ) + form.extnum;
-          full_address = full_address+ " " + location.municipio+ " " 
-          + location.estado+ " " + this.location.country
-
-          this.findLocation(full_address);
-          this.business.delegacion = location.municipio;
-          this.business.colonia = location.colonias.length==0?location.colonias[0]:null;
+            this.findLocation(full_address);
+            this.business.delegacion = location.municipio;
+            this.business.colonia = location.colonias.length === 1 ? location.colonias[0] : null;
+          }
+        },
+        ERROR => {
+          console.error("Error al obtener el código postal");
         }
-      },
-      ERROR => {
-        console.error("Error al obtener el código postal");
-      }
-    );
-  }
-
+      );
+    }
+  }  
   findLocation(address) {
     if (!this.geocoder) this.geocoder = new google.maps.Geocoder()
     this.geocoder.geocode({
@@ -136,7 +142,7 @@ export class BusinessModalComponent implements OnInit {
           this.location.marker.lng = results[0].geometry.location.lng();
           this.location.marker.draggable = true;
           this.location.viewport = results[0].geometry.viewport;
-          this.location.zoom = 12;
+          this.location.zoom = 16;
         }
         this.map.triggerResize()
       } else {
@@ -145,16 +151,52 @@ export class BusinessModalComponent implements OnInit {
     })
   }
 
-  saveBusiness(form:NgForm){
-    console.log("Consultando zip code:",form);    
-    console.log("Business", this.business);
+  saveBusiness(form: NgForm) {
+    console.log("Consultando zip code:", form);    
     console.log("Services", this.services.currentServices);
     console.log("Value", this.business.serviciosList);
-    this.submitted=true;
-    //this.bsModalRef.hide()
-
-    if(form.valid){
+    this.submitted = true;
+    if (form.valid) {
       console.log("El formulario es valido");
+      this.business.serviciosList = new Array<Service>();
+      this.business.metodoPagoList = new Array<PaymentMethod>();
+      this.business.tipoTarjetaList = new Array<CardType>();
+
+      this.services.currentServices.map( serviceId => this.business.serviciosList.push(new Service(serviceId)));
+      this.pMethods.currentPmethods.map( methodId => this.business.metodoPagoList.push(new PaymentMethod(methodId)));
+      this.cards.currentCardTypes.map(cardTypeId => this.business.tipoTarjetaList.push(new CardType(cardTypeId)));
+      //Set location
+      this.business.latitud = this.location.lat;
+      this.business.longitud = this.location.lng;
+
+      this.business.telefono = this.business.telefono.replace(/\D+/g, '');
+      let user = JSON.parse(sessionStorage.getItem("currentUser"));
+      this.business.idCuenta = user.idCuenta;
+      this.business.estatus = true;
+
+      console.log("Business", this.business);
+
+      if(this.business.idNegocio!=null && this.business.idNegocio!=''){
+        this.businessService.update(this.business).subscribe(
+          updateBusiness =>{
+            console.log("Se actualizó correctament el negocio", updateBusiness);    
+            this.onSaved(true);
+          }, 
+          error =>{
+            console.error("Error al actualizar el negocio en el sistema", error);
+            this.onSaved(false);
+          });
+      }else{
+        this.businessService.create(this.business).subscribe(
+          newBusiness =>{
+            console.log("Se guardo correctament el negocio", newBusiness);    
+            this.onSaved(true);
+          }, 
+          error =>{
+            console.error("Error al guardar el negocio en el sistema", error);
+            this.onSaved(false);
+          });
+      }      
     }
   }
 
