@@ -28,11 +28,15 @@ const Dashboard = {
 const Register = {
     text: 'Operaciones',
     link: '/company',
-    icon: 'fa fa-gears',
+    icon: 'fas fa-cogs',
     submenu: [
         {
             text: 'Negocios',
-            link: '/business/business'
+            link: '/operations/business'
+        },
+        {
+            text: 'Ofertas',
+            link: '/operations/offer'
         }
     ]
 };

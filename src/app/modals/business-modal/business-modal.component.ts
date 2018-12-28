@@ -102,22 +102,28 @@ export class BusinessModalComponent implements OnInit {
       this.business.serviciosList.map((serv => this.services.currentServices.push(serv.id)));
       this.business.metodoPagoList.map((method => this.pMethods.currentPmethods.push(method.id)));
       this.business.tipoTarjetaList.map((cardType => this.cards.currentCardTypes.push(cardType.id)));
+      this.location.lat = this.business.latitud;
+      this.location.lng = this.business.longitud;
+      this.location.marker.lat = this.business.latitud;
+      this.location.marker.lng = this.business.longitud;
+      this.getLocation(this.business.codigoPostal,null,false);
     }
   }
 
-  getLocation(zipcode: string, form: any) {
+  getLocation(zipcode: string, form: any, findLocation:boolean) {
     console.log("Consultando zip code:" + zipcode, form);
     if (zipcode && zipcode != '') {
       this.mxLocationService.getLocation(zipcode).subscribe(
         location => {
           console.log(location);
           if (location.municipio) {
-            this.currentLocation = location;
-            let full_address: string = (form.street || "") + form.extnum;
-            full_address = full_address + " " + location.municipio + " "
+            this.currentLocation = location;            
+            if(findLocation){
+              let full_address: string = (form.street || "") + form.extnum;
+              full_address = full_address + " " + location.municipio + " "
               + location.estado + " " + this.location.country
-
-            this.findLocation(full_address);
+              this.findLocation(full_address);
+            }
             this.business.delegacion = location.municipio;
             this.business.colonia = location.colonias.length === 1 ? location.colonias[0] : null;
           }

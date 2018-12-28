@@ -33,7 +33,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
             // scroll view to top
             window.scrollTo(0, 0);
             // close sidebar on route change
-            this.settings.layout.asideToggled = false;
+            this.settings.setLayoutSetting('asideToggled', false);
         });
 
         // enable sidebar autoclose from extenal clicks
@@ -44,7 +44,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     anyClickClose() {
         this.$doc = $(document).on(this.sbclickEvent, (e) => {
             if (!$(e.target).parents('.aside-container').length) {
-                this.settings.layout.asideToggled = false;
+                this.settings.setLayoutSetting('asideToggled', false);
             }
         });
     }
@@ -55,8 +55,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
 
     toggleSubmenuClick(event) {
+
+        event.preventDefault();
+
         if (!this.isSidebarCollapsed() && !this.isSidebarCollapsedText() && !this.isEnabledHover()) {
-            event.preventDefault();
 
             let target = $(event.target || event.srcElement || event.currentTarget);
             let ul, anchor = target;
@@ -145,7 +147,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
                 .removeClass('opening') // necesary for demo if switched between normal//collapsed mode
                 .addClass('nav-floating')
                 .css({
-                    position: this.settings.layout.isFixed ? 'fixed' : 'absolute',
+                    position: this.settings.getLayoutSetting('isFixed') ? 'fixed' : 'absolute',
                     top: itemTop,
                     bottom: (floatingNav.outerHeight(true) + itemTop > vwHeight) ? 0 : 'auto'
                 });
@@ -179,12 +181,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
 
     isSidebarCollapsed() {
-        return this.settings.layout.isCollapsed;
+        return this.settings.getLayoutSetting('isCollapsed');
     }
     isSidebarCollapsedText() {
-        return this.settings.layout.isCollapsedText;
+        return this.settings.getLayoutSetting('isCollapsedText');
     }
     isEnabledHover() {
-        return this.settings.layout.asideHover;
+        return this.settings.getLayoutSetting('asideHover');
     }
 }

@@ -5,6 +5,8 @@ import { Business } from '../../../shared/models/business.model';
 import { BusinessService } from '../../../core/http/business/business.service';
 import { User } from '../../../shared/models/user.model';
 import { AuthService } from '../../../core/auth/auth.service';
+import { OfferModalComponent } from 'src/app/modals/offer-modal/offer-modal.component';
+import { Offer } from 'src/app/shared/models/offer.model';
 
 @Component({
   selector: 'app-business',
@@ -82,7 +84,12 @@ export class BusinessComponent implements OnInit {
     }
   }
 
-  ofertBusiness() {
-    console.log("Inicia proceso de oferta")
+  offerBusiness() {
+    console.log("Inicia proceso de oferta");
+    let config = new ModalOptions();
+    config.initialState ={offer:new Offer(this.bSelectedId)};
+    config.class = 'gray modal-lg';
+    this.bsModalRef = this.modalService.show(OfferModalComponent, config);
+    this.bsModalRef.content.closeBtnName = 'Close';
   }
 }

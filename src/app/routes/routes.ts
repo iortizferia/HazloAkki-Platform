@@ -17,7 +17,7 @@ export const routes = [
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', loadChildren: './home/home.module#HomeModule' },
             { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
-            { path: 'business', loadChildren: './business/business.module#BusinessModule' }
+            { path: 'operations', loadChildren: './operations/operations.module#OperationsModule' }
         ]
     },
 

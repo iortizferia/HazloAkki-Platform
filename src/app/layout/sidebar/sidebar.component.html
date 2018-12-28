@@ -1,6 +1,6 @@
 <!-- START Sidebar (left)-->
 <div class="aside-inner">
-    <nav class="sidebar" sidebar-anyclick-close="" [class.show-scrollbar]="settings.layout.asideScrollbar">
+    <nav class="sidebar" sidebar-anyclick-close="" [class.show-scrollbar]="settings.getLayoutSetting('asideScrollbar')">
 
         <!-- START sidebar nav-->
         <ul class="sidebar-nav">
@@ -13,30 +13,30 @@
 
             <li *ngFor='let item of menuItems' [ngClass]="{'nav-heading': item.heading}" [routerLinkActive]="['active']">
                 <!-- menu heading -->
-                <span *ngIf="item.heading">{{item.text}}</span>
+                <span *ngIf="item.heading">{{ item.text}}</span>
                 <!-- external links -->
                 <a href *ngIf="!item.heading && !item.submenu && item.elink" [attr.target]="item.target" [attr.href]="item.elink" title="{{item.text}}">
                     <span class="float-right" *ngIf="item.alert" [ngClass]="item.label || 'badge badge-success'">{{item.alert}}</span>
                     <em class="{{item.icon}}" *ngIf="item.icon"></em>
-                    <span>{{item.text}}</span>
+                    <span>{{ item.text}}</span>
                 </a>
                 <!-- single menu item -->
                 <a href *ngIf="!item.heading && !item.submenu && !item.elink" [routerLink]="item.link" [attr.route]="item.link" title="{{item.text}}"
                     (click)="toggleSubmenuClick($event)" (mouseenter)="toggleSubmenuHover($event)">
                     <span class="float-right" *ngIf="item.alert" [ngClass]="item.label || 'badge badge-success'">{{item.alert}}</span>
                     <em class="{{item.icon}}" *ngIf="item.icon"></em>
-                    <span>{{item.text}}</span>
+                    <span>{{ item.text}}</span>
                 </a>
                 <!-- has submenu -->
                 <a href *ngIf="!item.heading && item.submenu" title="{{item.text}}"
                     (click)="toggleSubmenuClick($event)" (mouseenter)="toggleSubmenuHover($event)">
                         <span class="float-right" *ngIf="item.alert" [ngClass]="item.label || 'badge badge-success'">{{item.alert}}</span>
                         <em class="{{item.icon}}" *ngIf="item.icon"></em>
-                        <span>{{item.text}}</span>
+                        <span>{{ item.text}}</span>
                 </a>
                 <!-- SUBLEVEL -->
                 <ul *ngIf="item.submenu" class="sidebar-nav sidebar-subnav" [routerLinkActive]="['opening']">
-                    <li class="sidebar-subnav-header">{{item.text}}</li>
+                    <li class="sidebar-subnav-header">{{ item.text}}</li>
                     <li *ngFor='let subitem of item.submenu' [routerLinkActive]="['active']">
                         <!-- sublevel: external links -->
                         <a href *ngIf="!subitem.heading && !subitem.submenu && subitem.elink" [attr.target]="subitem.target" [attr.href]="subitem.elink" title="{{subitem.text}}">

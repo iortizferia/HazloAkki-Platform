@@ -12,10 +12,11 @@ import { ThemesService } from '../../core/themes/themes.service';
 export class OffsidebarComponent implements OnInit, OnDestroy {
 
     currentTheme: any;
+    selectedLanguage: string;
     clickEvent = 'click.offsidebar';
     $doc: any = null;
 
-    constructor(public settings: SettingsService, public themes: ThemesService ) {
+    constructor(public settings: SettingsService, public themes: ThemesService) {
         this.currentTheme = themes.getDefaultTheme();
     }
 
@@ -30,7 +31,7 @@ export class OffsidebarComponent implements OnInit, OnDestroy {
     anyClickClose() {
         this.$doc = $(document).on(this.clickEvent, (e) => {
             if (!$(e.target).parents('.offsidebar').length) {
-                this.settings.layout.offsidebarOpen = false;
+                this.settings.setLayoutSetting('offsidebarOpen', false);
             }
         });
     }

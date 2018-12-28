@@ -7,12 +7,6 @@
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
-      "prefix": "app",
-      "schematics": {
-        "@schematics/angular:component": {
-          "styleext": "scss"
-        }
-      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -117,7 +111,8 @@
       }
     },
     "hazloakki-platform-e2e": {
-      "root": "e2e/",
+      "root": "",
+      "sourceRoot": "",
       "projectType": "application",
       "architect": {
         "e2e": {
@@ -139,5 +134,14 @@
       }
     }
   },
-  "defaultProject": "hazloakki-platform"
+  "defaultProject": "hazloakki-platform",
+  "schematics": {
+    "@schematics/angular:component": {
+      "prefix": "app",
+      "styleext": "scss"
+    },
+    "@schematics/angular:directive": {
+      "prefix": "app"
+    }
+  }
 }

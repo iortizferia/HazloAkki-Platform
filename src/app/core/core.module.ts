@@ -10,7 +10,6 @@ import { ErrorHandlerInterceptor } from './interceptors/error-handler.intercepto
 import { CacheInterceptor } from './interceptors/cache.interceptor';
 import { HttpService } from './http/http.service';
 import { HttpClient } from '@angular/common/http';
-
 @NgModule({
     imports: [
     ],

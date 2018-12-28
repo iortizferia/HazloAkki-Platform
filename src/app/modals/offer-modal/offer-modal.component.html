@@ -1,0 +1,55 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Crear oferta</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<form role="form" novalidate #offerform="ngForm">
+  <div class="modal-body">
+    <div class="ml-auto clearfix"></div>
+    <div class="row">
+      <div class="col-xl-6">
+        <div class="typeahead-ctrl">
+          <div class="form-group">
+            <label>Titulo</label>
+            <input type="text" class="form-control" name="title" [(ngModel)]="offer.titulo" required [ngClass]="{ 'is-invalid': submitted && offerform.controls.title.errors }" >
+          </div>
+          <div class="form-group">
+            <label>Mensaje</label>
+            <textarea class="form-control" rows="4" name="message" [(ngModel)]="offer.mensaje" required [ngClass]="{ 'is-invalid': submitted && offerform.controls.message.errors }" ></textarea>
+          </div>
+          <div class="form-group">
+            <label>Duración</label>
+            <input type="text" class="form-control" name="duration" [(ngModel)]="offer.duracion" required [ngClass]="{ 'is-invalid': submitted && offerform.controls.duration.errors }">
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-6">
+        <div class="clearfix">
+          <button class="btn btn-primary btn-xs float-right mb-1" type="button">
+            <i class="icon-plus fa-md mr-1"></i>
+            <span>Agregar imagen</span>
+          </button>
+        </div>
+        <div>
+          <carousel [interval]="5000" [noWrap]="false">
+            <slide [active]="true">
+              <img src="assets/img/offer03.jpg" class="img-fluid">
+              <div class="carousel-caption">
+              </div>
+            </slide>
+            <slide [active]="false">
+              <img src="assets/img/offer04.jpg" class="img-fluid">
+              <div class="carousel-caption">
+              </div>
+            </slide>
+          </carousel>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="createOffer(offerform)" >Guardar</button>
+  </div>
+</form>

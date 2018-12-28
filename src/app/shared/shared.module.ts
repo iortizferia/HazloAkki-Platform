@@ -7,6 +7,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { NgxSelectModule } from 'ngx-select-ex'
 import { TextMaskModule } from 'angular2-text-mask';
 
@@ -29,6 +30,7 @@ import { NowDirective } from './directives/now/now.directive';
         BsDropdownModule.forRoot(),
         ProgressbarModule.forRoot(),
         ModalModule.forRoot(),
+        CarouselModule.forRoot(),
         TabsModule.forRoot(),
         NgxSelectModule,
         TextMaskModule
@@ -54,6 +56,7 @@ import { NowDirective } from './directives/now/now.directive';
         CollapseModule,
         ProgressbarModule,
         ModalModule,
+        CarouselModule,
         TabsModule,
         FlotDirective,
         SparklineDirective,

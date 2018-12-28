@@ -55,16 +55,15 @@ export class HeaderComponent implements OnInit {
     }
 
     toggleOffsidebar() {
-        console.log("Apagando offsidebar", this.settings.layout.offsidebarOpen);
-        this.settings.layout.offsidebarOpen = !this.settings.layout.offsidebarOpen;
+        this.settings.toggleLayoutSetting('offsidebarOpen');
     }
 
     toggleCollapsedSideabar() {
-        this.settings.layout.isCollapsed = !this.settings.layout.isCollapsed;
+        this.settings.toggleLayoutSetting('isCollapsed');
     }
 
     isCollapsedText() {
-        return this.settings.layout.isCollapsedText;
+        return this.settings.getLayoutSetting('isCollapsedText');
     }
 
     toggleFullScreen(event) {

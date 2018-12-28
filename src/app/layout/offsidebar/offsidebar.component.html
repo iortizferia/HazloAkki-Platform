@@ -3,7 +3,7 @@
         <ng-template tabHeading>
             <em class="icon-equalizer fa-lg"></em>
         </ng-template>
-        <h3 class="text-center text-thin mt-4" [innerHTML]="'Configuración'"></h3>
+        <h3 class="text-center text-thin mt-4" [innerHTML]="'offsidebar.setting.SETTINGS'"></h3>
         <div class="p-2">
             <h4 class="text-muted text-thin">Themes</h4>
             <div class="row row-flush mb-2">
@@ -121,7 +121,9 @@
                 <p class="float-left">Fixed</p>
                 <div class="float-right">
                     <label class="switch">
-                        <input type="checkbox" [(ngModel)]="settings.layout.isFixed" />
+                        <input type="checkbox"
+                            [ngModel]="settings.getLayoutSetting('isFixed')"
+                            (ngModelChange)="settings.setLayoutSetting('isFixed', $event)" />
                         <span></span>
                     </label>
                 </div>
@@ -130,7 +132,9 @@
                 <p class="float-left">Boxed</p>
                 <div class="float-right">
                     <label class="switch">
-                        <input type="checkbox" [(ngModel)]="settings.layout.isBoxed" />
+                        <input type="checkbox"
+                            [ngModel]="settings.getLayoutSetting('isBoxed')"
+                            (ngModelChange)="settings.setLayoutSetting('isBoxed', $event)" />
                         <span></span>
                     </label>
                 </div>
@@ -147,13 +151,16 @@
     </div>
     -->
         </div>
-        <div class="p-2" *ngIf="!settings.layout.horizontal">
+        <div class="p-2" *ngIf="!settings.getLayoutSetting('horizontal')">
             <h4 class="text-muted text-thin">Aside</h4>
             <div class="clearfix">
                 <p class="float-left">Collapsed</p>
                 <div class="float-right">
                     <label class="switch">
-                        <input type="checkbox" [(ngModel)]="settings.layout.isCollapsed" [disabled]="settings.layout.isCollapsedText" />
+                        <input type="checkbox"
+                            [ngModel]="settings.getLayoutSetting('isCollapsed')"
+                            (ngModelChange)="settings.setLayoutSetting('isCollapsed', $event)"
+                            [disabled]="settings.getLayoutSetting('isCollapsedText')" />
                         <span></span>
                     </label>
                 </div>
@@ -162,7 +169,10 @@
                 <p class="float-left">Collapsed Text</p>
                 <div class="float-right">
                     <label class="switch">
-                        <input type="checkbox" [(ngModel)]="settings.layout.isCollapsedText" [disabled]="settings.layout.isCollapsed" />
+                        <input type="checkbox"
+                            [ngModel]="settings.getLayoutSetting('isCollapsedText')"
+                            (ngModelChange)="settings.setLayoutSetting('isCollapsedText', $event)"
+                            [disabled]="settings.getLayoutSetting('isCollapsed')" />
                         <span></span>
                     </label>
                 </div>
@@ -171,7 +181,9 @@
                 <p class="float-left">Float</p>
                 <div class="float-right">
                     <label class="switch">
-                        <input type="checkbox" [(ngModel)]="settings.layout.isFloat" />
+                        <input type="checkbox"
+                            [ngModel]="settings.getLayoutSetting('isFloat')"
+                            (ngModelChange)="settings.setLayoutSetting('isFloat', $event)" />
                         <span></span>
                     </label>
                 </div>
@@ -180,7 +192,9 @@
                 <p class="float-left">Hover</p>
                 <div class="float-right">
                     <label class="switch">
-                        <input type="checkbox" [(ngModel)]="settings.layout.asideHover" />
+                        <input type="checkbox"
+                            [ngModel]="settings.getLayoutSetting('asideHover')"
+                            (ngModelChange)="settings.setLayoutSetting('asideHover', $event)" />
                         <span></span>
                     </label>
                 </div>
@@ -189,13 +203,16 @@
                 <p class="float-left">Show Scrollbar</p>
                 <div class="float-right">
                     <label class="switch">
-                        <input type="checkbox" [(ngModel)]="settings.layout.asideScrollbar" />
+                        <input type="checkbox"
+                            [ngModel]="settings.getLayoutSetting('asideScrollbar')"
+                            (ngModelChange)="settings.setLayoutSetting('asideScrollbar', $event)" />
                         <span></span>
                     </label>
                 </div>
             </div>
         </div>
         <div class="p-2">
+            
         </div>
     </tab>
     <tab>
