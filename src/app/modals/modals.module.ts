@@ -10,7 +10,7 @@ import { OfferModalComponent } from './offer-modal/offer-modal.component';
     SharedModule,
     FileUploadModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCbXBCYL_97dn1I7ek-qitjQhGSS5iQ-2I'
+      apiKey: 'xxxx'
   })
   ],
   declarations: [BusinessModalComponent, OfferModalComponent],

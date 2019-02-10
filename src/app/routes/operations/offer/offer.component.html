@@ -11,7 +11,7 @@
       <em class="fa fa-check"></em>Publicar
     </button>
     <button class="btn btn-sm btn-primary ml-1" type="button" (click)="createOffer()"
-     [disabled] = "!bSelectedId || bSelectedId==-1 || bSelectedId==''">
+     [disabled] = "!bSelectedId || bSelectedId==='-1' || bSelectedId==''">
       <i style="padding-right:5px" class="icon-plus fa-lg fa-align-left"></i>
       <span>Crear oferta</span>
     </button>
@@ -21,7 +21,7 @@
   <div class="col">
     <div class="form-group">
       <label>Selecciona un negocio para ver sus ofertas</label>
-      <select class="form-control" name="business" [value]="value" (change)="showOffer($event.target.value)">
+      <select class="form-control" name="business" (change)="showOffer($event.target.value)">
         <option value="">Selecciona un negocio</option>
         <option *ngFor="let bu of business" [value]="bu.idNegocio">{{bu.nombre}}</option>
         <option value="-1">Todos los negocios</option>

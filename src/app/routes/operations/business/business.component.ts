@@ -7,6 +7,9 @@ import { User } from '../../../shared/models/user.model';
 import { AuthService } from '../../../core/auth/auth.service';
 import { OfferModalComponent } from 'src/app/modals/offer-modal/offer-modal.component';
 import { Offer } from 'src/app/shared/models/offer.model';
+import { Router } from '@angular/router';
+
+const swal = require('sweetalert');
 
 @Component({
   selector: 'app-business',
@@ -20,7 +23,8 @@ export class BusinessComponent implements OnInit {
   bsModalRef: BsModalRef;
   constructor(private modalService: BsModalService,
     private businessService: BusinessService,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private route: Router) { }
 
   ngOnInit() {
     this.authService.pupulate();
@@ -40,17 +44,18 @@ export class BusinessComponent implements OnInit {
 
   addNewBusiness() {
     let config = new ModalOptions();
-    config.initialState ={business:null};
+    config.initialState = { business: null };
     this.showModal(config);
   }
 
-  showModal(config:ModalOptions){
+  showModal(config: ModalOptions) {
     config.class = 'gray modal-lg';
+    config.ignoreBackdropClick = true;
     this.bsModalRef = this.modalService.show(BusinessModalComponent, config);
     this.bsModalRef.content.closeBtnName = 'Close';
     this.bsModalRef.content.onSaved = (resp) => {
-      console.log("Retornando de modal",resp);
-      if(resp){
+      console.log("Retornando de modal", resp);
+      if (resp) {
         this.loadBusiness();
       }
       this.bsModalRef.hide();
@@ -68,28 +73,60 @@ export class BusinessComponent implements OnInit {
     }
   }
 
-  editCloneBusiness(type:number) {
+  editCloneBusiness(type: number) {
     if (this.bSelectedId && this.bSelectedId != null
-      && this.bSelectedId != '') {       
-        let bu = this.business.find(b => b.idNegocio===this.bSelectedId);
-        if(type == 1){          
-          bu.idNegocio = null;
+      && this.bSelectedId != '') {
+      let bu;
+      this.businessService.getBusinessById(this.bSelectedId).subscribe(
+        business => {
+          console.log("Negocio encontrado", business);
+          bu = business;
+          if (type == 1) {
+            bu.idNegocio = null;
+          }
+          console.log("Inicia proceso de " + (bu.idNegocio == null ? 'clonado' : 'edición') + "!!");
+          let config = new ModalOptions();
+          config.initialState = {
+            business: Object.assign({}, bu)
+          };
+          this.showModal(config);
         }
-        console.log("Inicia proceso de "+(bu.idNegocio==null?'clonado':'edición')+"!!");
-        let config = new ModalOptions();
-        config.initialState ={
-          business:Object.assign({}, bu)
-        };
-        this.showModal(config);
+      );
     }
   }
 
   offerBusiness() {
     console.log("Inicia proceso de oferta");
-    let config = new ModalOptions();
-    config.initialState ={offer:new Offer(this.bSelectedId)};
-    config.class = 'gray modal-lg';
-    this.bsModalRef = this.modalService.show(OfferModalComponent, config);
-    this.bsModalRef.content.closeBtnName = 'Close';
+    if (this.bSelectedId && this.bSelectedId != null
+      && this.bSelectedId != '') {
+
+      let config = new ModalOptions();
+      config.initialState = { offer: new Offer(this.bSelectedId) };
+      config.class = 'gray modal-lg';
+      config.ignoreBackdropClick = true;
+      this.bsModalRef = this.modalService.show(OfferModalComponent, config);
+      this.bsModalRef.content.closeBtnName = 'Close';
+      this.bsModalRef.content.onSaved = (resp) => {
+        console.log("Retornando de modal", resp);
+        if (resp) {
+          swal({
+            title: "Se guardo correctamente la oferta!",
+            text: "Desear ir a la sección de ofertas?",
+            icon: "success",
+            buttons: ["Cancelar", "Sí, ir a ofertas"]
+          }).then((goOffers) => {
+            if (goOffers) {
+              console.log("Navegando a ofertas");
+              this.route.navigate(['/operations','offer']);
+            } else {
+              console.log("Permanecer en negocios");
+              this.loadBusiness();
+            }
+          });
+        }
+        this.bsModalRef.hide();
+      };
+    }
+
   }
 }

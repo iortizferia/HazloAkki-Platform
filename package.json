@@ -50,6 +50,7 @@
     "screenfull": "3.3.2",
     "simple-line-icons": "2.4.1",
     "source-sans-pro": "2.20.2",
+    "sweetalert": "^2.1.2",
     "weather-icons": "github:erikflowers/weather-icons",
     "zone.js": "0.8.26"
   },

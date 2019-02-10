@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hazloakki-dep
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: hazloakki-platform
+    spec:
+      containers:
+      - name: hazloakki-platform
+        image: iortizf/hazloakki-platform:1.0
+        ports:
+        - containerPort: 80

@@ -50,7 +50,7 @@ export class BusinessModalComponent implements OnInit {
       draggable: true
     },
     country: "México",
-    zoom: 12
+    zoom: 16
   };
 
   @ViewChild(AgmMap) map: AgmMap;
@@ -134,6 +134,7 @@ export class BusinessModalComponent implements OnInit {
       );
     }
   }  
+
   findLocation(address) {
     if (!this.geocoder) this.geocoder = new google.maps.Geocoder()
     this.geocoder.geocode({
@@ -152,9 +153,15 @@ export class BusinessModalComponent implements OnInit {
         }
         this.map.triggerResize()
       } else {
-        alert("No hay suficientes datos para localizar tu ubicación exacta");
+        console.error("No hay suficientes datos para localizar tu ubicación exacta");
       }
     })
+  }
+
+  markerDragEnd(event:any){
+    console.log("Updating marker",event);
+    this.location.marker.lat = event.coords.lat;
+    this.location.marker.lng = event.coords.lng;
   }
 
   saveBusiness(form: NgForm) {
@@ -172,8 +179,8 @@ export class BusinessModalComponent implements OnInit {
       this.pMethods.currentPmethods.map( methodId => this.business.metodoPagoList.push(new PaymentMethod(methodId)));
       this.cards.currentCardTypes.map(cardTypeId => this.business.tipoTarjetaList.push(new CardType(cardTypeId)));
       //Set location
-      this.business.latitud = this.location.lat;
-      this.business.longitud = this.location.lng;
+      this.business.latitud = this.location.marker.lat;
+      this.business.longitud = this.location.marker.lng;
 
       this.business.telefono = this.business.telefono.replace(/\D+/g, '');
       let user = JSON.parse(sessionStorage.getItem("currentUser"));
@@ -189,7 +196,7 @@ export class BusinessModalComponent implements OnInit {
             this.onSaved(true);
           }, 
           error =>{
-            console.error("Error al actualizar el negocio en el sistema", error);
+            console.error("Error al actualizar el negocio en el sistema", error, this.business);
             this.onSaved(false);
           });
       }else{
