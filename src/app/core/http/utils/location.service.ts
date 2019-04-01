@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { HttpService } from '../http.service';
 import { MXLocation } from '../../../shared/models/mxlocation.model';
+import { HttpClient } from '@angular/common/http';
 
 const location_api = "https://api-codigos-postales.herokuapp.com/v2/codigo_postal/";
 
@@ -11,7 +11,7 @@ const location_api = "https://api-codigos-postales.herokuapp.com/v2/codigo_posta
 })
 export class MXLocationService {
 
-  constructor(private httpService:HttpService) { }
+  constructor(private httpService:HttpClient) { }
 
   getLocation(zipcode:string):Observable<MXLocation>{
     return this.httpService

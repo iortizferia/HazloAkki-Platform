@@ -4,6 +4,8 @@ import { MXLocationService } from '../../core/http/utils/location.service';
 import { CategoryService } from '../../core/http/business/category.service';
 import { PaymentMethodService } from '../../core/http/business/payment-method.service';
 import { Category } from '../../shared/models/category.model';
+import { Horario, Dia, HorarioNegocio } from '../../shared/models/horario.model';
+import { Imagen } from "../../shared/models/imagen.model";
 import { ServiceService } from '../../core/http/business/service.service';
 import { CardTypeService } from '../../core/http/business/cardtype.service';
 
@@ -16,6 +18,10 @@ import { Service } from '../../shared/models/service.model';
 import { CardType } from '../../shared/models/card-type.model';
 import { NgForm } from '@angular/forms';
 import { BusinessService } from '../../core/http/business/business.service';
+import { FileUploader } from 'ng2-file-upload';
+import { BusinessImageService } from 'src/app/core/http/business/business.image.service';
+import { AccionesService } from 'src/app/core/http/business/acciones.service';
+import { Accion } from 'src/app/shared/models/accion.model';
 
 declare var google: any;
 
@@ -30,14 +36,15 @@ export class BusinessModalComponent implements OnInit {
   pMethods = { methods: new Array<PaymentMethod>(), currentPmethods: new Array<string>() };
   services = { svc: new Array<Service>(), currentServices: new Array<string>() };
   cards = { types: new Array<CardType>(), currentCardTypes: new Array<string>() };
+  actions = { actions: new Array<Accion>(), currentActions: new Array<number>() };
   currentLocation = new MXLocation();
 
   business: Business;
   submitted: boolean;
-  onSaved:any;
+  onSaved: any;
 
   mask = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
-  timeMask = [/[0-9]/, /\d/,':', /[0-9]/, /\d/];
+  timeMask = [/[0-9]/, /\d/, ':', /[0-9]/, /\d/];
 
   //Handling Map
   geocoder: any;
@@ -55,6 +62,22 @@ export class BusinessModalComponent implements OnInit {
 
   @ViewChild(AgmMap) map: AgmMap;
 
+  horarios = new Array<Horario>();
+  dias = new Array<Dia>();
+  catHoras = [ { hora: "0" }, { hora: "1" },
+    { hora: "08:00 AM" }, { hora: "08:30 AM" }, { hora: "09:00 AM" }, { hora: "09:30 AM" },
+    { hora: "10:00 AM" }, { hora: "10:30 AM" }, { hora: "11:00 AM" }, { hora: "11:30 AM" },
+    { hora: "12:00 PM" }, { hora: "12:30 PM" }, { hora: "01:00 PM" }, { hora: "01:30 PM" },
+    { hora: "02:00 PM" }, { hora: "02:30 PM" }, { hora: "03:00 PM" }, { hora: "03:30 PM" },
+    { hora: "04:00 PM" }, { hora: "04:30 PM" }, { hora: "05:00 PM" }, { hora: "05:30 PM" },
+    { hora: "06:00 PM" }, { hora: "06:30 PM" }, { hora: "07:00 PM" }, { hora: "07:30 PM" },
+    { hora: "08:00 PM" }, { hora: "08:30 PM" }, { hora: "09:00 PM" }, { hora: "09:30 PM" },
+    { hora: "10:00 PM" }, { hora: "10:30 PM" }
+  ];
+
+  uploader: FileUploader = new FileUploader({ isHTML5: true });
+  hasBaseDropZoneOver: boolean = false;
+
   constructor(public bsModalRef: BsModalRef,
     private modalService: BsModalService,
     public mapsApiLoader: MapsAPILoader,
@@ -63,7 +86,9 @@ export class BusinessModalComponent implements OnInit {
     private categoryService: CategoryService,
     private paymentMethodService: PaymentMethodService,
     private serviceService: ServiceService,
-    private cardTypeService: CardTypeService) {
+    private cardTypeService: CardTypeService,
+    private businessImageService: BusinessImageService,
+    private accionesService: AccionesService) {
 
     this.mapsApiLoader = mapsApiLoader;
     this.mapsApiLoader.load().then(() => {
@@ -72,7 +97,27 @@ export class BusinessModalComponent implements OnInit {
 
   }
 
+  fileOverBase(e: any): void {
+    this.hasBaseDropZoneOver = e;
+  }
+
+  imagenes = new Array<Imagen>();
+
   ngOnInit() {
+    this.uploader.onAfterAddingFile = (file) => {
+      file.withCredentials = false;
+      var reader = new FileReader();
+      reader.readAsDataURL(file._file);
+      reader.onload = (_event) => {
+        this.imagenes.push(new Imagen(reader.result));
+      }
+    };
+
+    this.accionesService.getActions().subscribe(acciones => {
+      console.log("Recuperando acciones", acciones);
+      this.actions.actions = acciones;
+    });
+
     this.categoryService.getCategories().subscribe(
       categories => {
         this.categories = categories;
@@ -94,34 +139,56 @@ export class BusinessModalComponent implements OnInit {
     );
 
     console.log("Llegando business", this.business);
+    this.dias.push(new Dia(1, "Sábado", new Array<Horario>(new Horario("0", "0"))));
+    this.dias.push(new Dia(2, "Domingo", new Array<Horario>(new Horario("0", "0"))));
+    this.dias.push(new Dia(3, "Lunes", new Array<Horario>(new Horario("0", "0"))));
+    this.dias.push(new Dia(4, "Martes", new Array<Horario>(new Horario("0", "0"))));
+    this.dias.push(new Dia(5, "Miércoles", new Array<Horario>(new Horario("0", "0"))));
+    this.dias.push(new Dia(6, "Jueves", new Array<Horario>(new Horario("0", "0"))));
+    this.dias.push(new Dia(7, "Viernes", new Array<Horario>(new Horario("0", "0"))));
 
     if (this.business == null || !this.business) {
       this.business = new Business();
       this.business.idCategoria = 0;
     } else {
-      this.business.serviciosList.map((serv => this.services.currentServices.push(serv.id)));
-      this.business.metodoPagoList.map((method => this.pMethods.currentPmethods.push(method.id)));
-      this.business.tipoTarjetaList.map((cardType => this.cards.currentCardTypes.push(cardType.id)));
+      this.business.servicios.map((serv => this.services.currentServices.push(serv.id)));
+      this.business.metodoPago.map((method => this.pMethods.currentPmethods.push(method.id)));
+      this.business.tipoTarjeta.map((cardType => this.cards.currentCardTypes.push(cardType.id)));
+      this.business.acciones.map(idAccion => this.actions.currentActions.push(idAccion));
+
+      this.business.horario.map(horario => {
+        let dia = this.dias[horario.idDia - 1];
+        dia.abierto = horario.abierto;
+        dia.veintiCuatroHrs = horario.veinticuatroHrs;
+        dia.horario.push(new Horario(horario.abre, horario.abre));
+      });
+
+      this.businessImageService.obtenerImagenes(this.business.idNegocio).subscribe(imagenes => {
+        console.log("Recuperando imagenes", imagenes);
+        this.imagenes = imagenes;
+      });
+
       this.location.lat = this.business.latitud;
       this.location.lng = this.business.longitud;
       this.location.marker.lat = this.business.latitud;
       this.location.marker.lng = this.business.longitud;
-      this.getLocation(this.business.codigoPostal,null,false);
+      this.getLocation(this.business.codigoPostal, null, false);
     }
+
   }
 
-  getLocation(zipcode: string, form: any, findLocation:boolean) {
+  getLocation(zipcode: string, form: any, findLocation: boolean) {
     console.log("Consultando zip code:" + zipcode, form);
     if (zipcode && zipcode != '') {
       this.mxLocationService.getLocation(zipcode).subscribe(
         location => {
           console.log(location);
           if (location.municipio) {
-            this.currentLocation = location;            
-            if(findLocation){
+            this.currentLocation = location;
+            if (findLocation) {
               let full_address: string = (form.street || "") + form.extnum;
               full_address = full_address + " " + location.municipio + " "
-              + location.estado + " " + this.location.country
+                + location.estado + " " + this.location.country
               this.findLocation(full_address);
             }
             this.business.delegacion = location.municipio;
@@ -133,7 +200,7 @@ export class BusinessModalComponent implements OnInit {
         }
       );
     }
-  }  
+  }
 
   findLocation(address) {
     if (!this.geocoder) this.geocoder = new google.maps.Geocoder()
@@ -158,26 +225,42 @@ export class BusinessModalComponent implements OnInit {
     })
   }
 
-  markerDragEnd(event:any){
-    console.log("Updating marker",event);
+  markerDragEnd(event: any) {
+    console.log("Updating marker", event);
     this.location.marker.lat = event.coords.lat;
     this.location.marker.lng = event.coords.lng;
   }
 
   saveBusiness(form: NgForm) {
-    console.log("Consultando zip code:", form);    
+    console.log("Consultando zip code:", form);
     console.log("Services", this.services.currentServices);
-    console.log("Value", this.business.serviciosList);
+    console.log("Value", this.business.servicios);
     this.submitted = true;
     if (form.valid) {
       console.log("El formulario es valido");
-      this.business.serviciosList = new Array<Service>();
-      this.business.metodoPagoList = new Array<PaymentMethod>();
-      this.business.tipoTarjetaList = new Array<CardType>();
+      this.business.servicios = new Array<Service>();
+      this.business.metodoPago = new Array<PaymentMethod>();
+      this.business.tipoTarjeta = new Array<CardType>();
 
-      this.services.currentServices.map( serviceId => this.business.serviciosList.push(new Service(serviceId)));
-      this.pMethods.currentPmethods.map( methodId => this.business.metodoPagoList.push(new PaymentMethod(methodId)));
-      this.cards.currentCardTypes.map(cardTypeId => this.business.tipoTarjetaList.push(new CardType(cardTypeId)));
+      this.services.currentServices.map(serviceId => this.business.servicios.push(new Service(serviceId)));
+      this.pMethods.currentPmethods.map(methodId => this.business.metodoPago.push(new PaymentMethod(methodId)));
+      this.cards.currentCardTypes.map(cardTypeId => this.business.tipoTarjeta.push(new CardType(cardTypeId)));
+      this.actions.currentActions.map(idAccion => this.business.acciones.push(idAccion));
+
+      this.dias.map(dia => {
+        let horario = new HorarioNegocio();
+        horario.idNegocio = this.business.idNegocio;
+        horario.idDia = dia.idDia;
+        horario.abierto = dia.abierto;
+        horario.veinticuatroHrs = dia.veintiCuatroHrs;
+
+        dia.horario.forEach(h => {
+          horario.abre = h.abre;
+          horario.cierra = h.cierra;
+        })
+        this.business.horario.push(horario);
+      });      
+
       //Set location
       this.business.latitud = this.location.marker.lat;
       this.business.longitud = this.location.marker.lng;
@@ -185,32 +268,42 @@ export class BusinessModalComponent implements OnInit {
       this.business.telefono = this.business.telefono.replace(/\D+/g, '');
       let user = JSON.parse(sessionStorage.getItem("currentUser"));
       this.business.idCuenta = user.idCuenta;
-      this.business.estatus = true;
+      this.business.idEstatus = 1;
 
       console.log("Business", this.business);
 
-      if(this.business.idNegocio!=null && this.business.idNegocio!=''){
+      if (this.business.idNegocio != null && this.business.idNegocio != '') {
         this.businessService.update(this.business).subscribe(
-          updateBusiness =>{
-            console.log("Se actualizó correctament el negocio", updateBusiness);    
+          updateBusiness => {
+            console.log("Se actualizó correctament el negocio", updateBusiness);
             this.onSaved(true);
-          }, 
-          error =>{
+          },
+          error => {
             console.error("Error al actualizar el negocio en el sistema", error, this.business);
             this.onSaved(false);
           });
-      }else{
+      } else {
         this.businessService.create(this.business).subscribe(
-          newBusiness =>{
-            console.log("Se guardo correctament el negocio", newBusiness);    
+          newBusiness => {
+            console.log("Se guardo correctament el negocio", newBusiness);
             this.onSaved(true);
-          }, 
-          error =>{
+          },
+          error => {
             console.error("Error al guardar el negocio en el sistema", error);
             this.onSaved(false);
           });
-      }      
+      }
     }
+  }
+
+  removerHorario(indexP: number, indexH: number) {
+    this.dias[indexP].horario.splice(indexH, 1);
+  }
+
+  agregarHorario(indexP: number) {
+    let idDia = this.dias[indexP].idDia;
+    console.log("Agregando " + indexP + " dia " + idDia);
+    this.dias[indexP].horario.push(new Horario("0", "0"));
   }
 
 }

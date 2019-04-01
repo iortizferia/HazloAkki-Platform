@@ -12,7 +12,8 @@
           <div class="col">
             <div class="form-group">
               <label>Nombre</label>
-              <input class="form-control form-control-sm" name="name" [(ngModel)]="business.nombre" required [ngClass]="{ 'is-invalid': submitted && businessform.controls.name.errors }" />
+              <input class="form-control form-control-sm" name="name" [(ngModel)]="business.nombre" required
+                [ngClass]="{ 'is-invalid': submitted && businessform.controls.name.errors }" />
             </div>
           </div>
           <div class="col">
@@ -36,25 +37,20 @@
           </div>
           <div class="col">
             <div class="form-group">
-              <label>Horario</label>
-              <input class="form-control form-control-sm" name="time" [(ngModel)]="business.horario" required [ngClass]="{ 'is-invalid': submitted && businessform.controls.time.errors }"
-                placeholder="HH:MM AM - HH:MM PM" />
+              <label>Correo electrónico</label>
+              <input class="form-control form-control-sm" type="email" name="email" [(ngModel)]="business.email"
+                required [ngClass]="{ 'is-invalid': submitted && businessform.controls.email.errors }"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" />
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col">
             <div class="form-group">
-              <label>Correo electrónico</label>
-              <input class="form-control form-control-sm" type="email" name="email" [(ngModel)]="business.email"
-                required [ngClass]="{ 'is-invalid': submitted && businessform.controls.email.errors }" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" />
-            </div>
-          </div>
-          <div class="col">
-            <div class="form-group">
               <label>Teléfono</label>
-              <input class="form-control form-control-sm" [textMask]="{mask: mask}" name="phone" [(ngModel)]="business.telefono"
-                required [ngClass]="{ 'is-invalid': submitted && businessform.controls.phone.errors }" />
+              <input class="form-control form-control-sm" [textMask]="{mask: mask}" name="phone"
+                [(ngModel)]="business.telefono" required
+                [ngClass]="{ 'is-invalid': submitted && businessform.controls.phone.errors }" />
             </div>
           </div>
         </div>
@@ -62,7 +58,8 @@
           <div class="col">
             <div class="form-group">
               <label>Descripción</label>
-              <textarea class="form-control" rows="5" name="description" [(ngModel)]="business.descripcion" required></textarea>
+              <textarea class="form-control" rows="5" name="description" [(ngModel)]="business.descripcion"
+                required></textarea>
             </div>
           </div>
         </div>
@@ -72,36 +69,42 @@
           <div class="col-4">
             <div class="form-group">
               <label>Calle</label>
-              <input class="form-control form-control-sm" name="street" [(ngModel)]="business.calle" (blur)="getLocation(zipcode.value, businessform.value, true)"
-                required [ngClass]="{ 'is-invalid': submitted && businessform.controls.street.errors }" />
+              <input class="form-control form-control-sm" name="street" [(ngModel)]="business.calle"
+                (blur)="getLocation(zipcode.value, businessform.value, true)" required
+                [ngClass]="{ 'is-invalid': submitted && businessform.controls.street.errors }" />
             </div>
             <div class="form-group">
               <label>Número exterior</label>
-              <input class="form-control form-control-sm" type="number" name="extnum" [(ngModel)]="business.numeroExterior"
-                (blur)="getLocation(zipcode.value, businessform.value, true)" required [ngClass]="{ 'is-invalid': submitted && businessform.controls.extnum.errors }" />
+              <input class="form-control form-control-sm" type="number" name="extnum"
+                [(ngModel)]="business.numeroExterior" (blur)="getLocation(zipcode.value, businessform.value, true)"
+                required [ngClass]="{ 'is-invalid': submitted && businessform.controls.extnum.errors }" />
             </div>
             <div class="form-group">
               <label>Código postal</label>
               <input class="form-control form-control-sm" name="zipcode" [(ngModel)]="business.codigoPostal" required
-                #zipcode (blur)="getLocation(zipcode.value, businessform.value, true)" [ngClass]="{ 'is-invalid': submitted && businessform.controls.zipcode.errors }" />
+                #zipcode (blur)="getLocation(zipcode.value, businessform.value, true)"
+                [ngClass]="{ 'is-invalid': submitted && businessform.controls.zipcode.errors }" />
             </div>
             <div class="form-group">
               <label>Colonia</label>
-              <select class="form-control form-control-sm" name="colonia" [disabled]="currentLocation?.colonias?.length==1"
-                [(ngModel)]="business.colonia" required [ngClass]="{ 'is-invalid': submitted && businessform.controls.colonia.errors }">
+              <select class="form-control form-control-sm" name="colonia"
+                [disabled]="currentLocation?.colonias?.length==1" [(ngModel)]="business.colonia" required
+                [ngClass]="{ 'is-invalid': submitted && businessform.controls.colonia.errors }">
                 <option *ngFor="let colonia of currentLocation?.colonias" [value]="colonia">{{colonia}}</option>
               </select>
             </div>
             <div class="form-group">
               <label>Delegación</label>
-              <input class="form-control form-control-sm" name="delegacion" disabled [(ngModel)]="business.delegacion" />
+              <input class="form-control form-control-sm" name="delegacion" disabled
+                [(ngModel)]="business.delegacion" />
             </div>
           </div>
           <div class="col-8">
             <label>Selecciona en el mapa la ubicación exacta de tu negocio</label>
             <agm-map [(latitude)]="location.lat" [(longitude)]="location.lng" [(zoom)]="location.zoom"
               [disableDefaultUI]="true" [zoomControl]="true" style="height: 336px;">
-              <agm-marker [(latitude)]="location.marker.lat" [(longitude)]="location.marker.lng" [markerDraggable]="location.marker.draggable" (dragEnd)="markerDragEnd($event)">
+              <agm-marker [(latitude)]="location.marker.lat" [(longitude)]="location.marker.lng"
+                [markerDraggable]="location.marker.draggable" (dragEnd)="markerDragEnd($event)">
                 <agm-info-window>
                   <strong>{{business.nombre}}</strong>
                 </agm-info-window>
@@ -110,13 +113,82 @@
           </div>
         </div>
       </tab>
-      <tab heading="Servicios">
+      <tab heading="Horarios">
+        <table>
+          <tbody>
+            <tr *ngFor="let dia of dias;let indexP= index">
+              <td><label>{{dia.dia}}</label></td>
+              <td>
+                <div class="form-group mx-sm-3 mb-2">
+                  <label class="switch switch-sm mt-1">
+                    <input [checked]="dia.abierto" type="checkbox" (change)="dia.abierto= !dia.abierto"><span></span>
+                  </label>
+                </div>
+              </td>
+              <td>
+                <label>{{dia.abierto?'Abierto':'Cerrado'}}</label>
+              </td>
+              <td>
+                <div *ngIf="dia.abierto" class="form-group">
+                  <div *ngFor="let horario of dia.horario;let last = last;let indexH=index" class="ml-3">
+                    <select class="mr-2" [(ngModel)]="horario.abre" [ngModelOptions]="{standalone: true}">                       
+                      <option *ngFor="let h of catHoras" [value]="h.hora">{{h.hora == 0 || h.hora == 1 ? h.hora == 0 ? 'Abre a las': '24 horas' : h.hora}}</option>
+                    </select>
+                    -
+                    <select class="ml-2" [(ngModel)]="horario.cierra" [ngModelOptions]="{standalone: true}">
+                      <option *ngFor="let h of catHoras" [value]="h.hora">{{h.hora == 0 || h.hora == 1 ? h.hora == 0 ? 'Cierra a las': '24 horas' : h.hora}}</option>
+                    </select>
+                    <span class="close ml-2" style="float: none;" *ngIf="dia.horario.length != 1 "
+                      (click)="removerHorario(indexP, indexH)">x</span>
+                    <a class="ml-2 btn-link" *ngIf="last" href="#" (click)="agregarHorario(indexP)">Agregar</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </tab>
+      <tab heading="Imagenes">
+        <div class="row mb-2">
+          <div class="col">
+            <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
+              [uploader]="uploader" class="box-placeholder my-drop-zone text-center">
+              Arrastra una foto aquí.
+              O bien
+              <label for="file2" class="file-upload">
+                <button class="btn btn-xs btn-primary">Selecciona una imagen</button>
+                <input id="file2" type="file" ng2FileSelect [uploader]="uploader" />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="card-columns">
+            <div class="card border-primary" *ngFor="let img of imagenes">
+              <img [src]="img.rutaImagen" class="card-img-top" height="200px" alt="...">
+              <div class="card-footer border-primary">
+                <div class="c-radio float-left">
+                  <label>
+                    <input type="radio" [checked]="img.perfil" name="perfil" />
+                    <span class="fa fa-circle"></span>Perfíl?
+                  </label>
+                </div>
+                <button type="button" class="btn btn-danger btn-xs float-right">
+                  <span class="icon-trash mr"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </tab>
+      <tab heading="Otros">
         <fieldset>
           <div class="form-group row">
             <div class="col">
-              <label>Servicios</label>
-              <ngx-select [multiple]="true" [items]="services.svc" name="services" [(ngModel)]="services.currentServices"
-                optionValueField="id" optionTextField="nombre" placeholder="Selecciona todos los servicios que manejas">
+              <label> <b>Tags</b> - Acciones que se realacionan con tu negocio</label>
+              <ngx-select [multiple]="true" [items]="actions.actions" name="actions"
+                [(ngModel)]="actions.currentActions" optionValueField="idAccion" optionTextField="nombre"
+                placeholder="Ej. Comer, Beber">
               </ngx-select>
             </div>
           </div>
@@ -124,9 +196,21 @@
         <fieldset>
           <div class="form-group row">
             <div class="col">
-              <label>Métodos de pago</label>
-              <ngx-select [multiple]="true" [items]="pMethods.methods" name="pmethods" [(ngModel)]="pMethods.currentPmethods"
-                required optionValueField="id" optionTextField="nombre" placeholder="Selecciona todos los métodos de pagos que manejas">
+              <label><b>Servicios</b> - Qué servicios ofreces?</label>
+              <ngx-select [multiple]="true" [items]="services.svc" name="services"
+                [(ngModel)]="services.currentServices" optionValueField="id" optionTextField="nombre"
+                placeholder="Selecciona todos los servicios que manejas">
+              </ngx-select>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <div class="form-group row">
+            <div class="col">
+              <label><b>Métodos de pago</b> - Qué métodos de pago manejas?</label>
+              <ngx-select [multiple]="true" [items]="pMethods.methods" name="pmethods"
+                [(ngModel)]="pMethods.currentPmethods" required optionValueField="id" optionTextField="nombre"
+                placeholder="Selecciona todos los métodos de pagos que manejas">
               </ngx-select>
               <div *ngIf="submitted && pMethods.currentPmethods.length==0">
                 <span class="text-danger">*Selecciona los metodos de pago que manejas en tu negocio</span>
@@ -137,9 +221,10 @@
         <fieldset *ngIf="pMethods.currentPmethods.indexOf('4') >= 0">
           <div class="form-group row">
             <div class="col">
-              <label>Tipos de tarjetas</label>
+              <label><b>Tipos de tarjetas</b></label>
               <ngx-select [multiple]="true" [items]="cards.types" name="cardstypes" [(ngModel)]="cards.currentCardTypes"
-                optionValueField="id" optionTextField="nombre" placeholder="Selecciona todos los tipos de tarjetas que manejas">
+                optionValueField="id" optionTextField="nombre"
+                placeholder="Selecciona todos los tipos de tarjetas que manejas">
               </ngx-select>
             </div>
           </div>
@@ -149,6 +234,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Cancelar</button>
-    <button type="button" class="btn btn-primary" (click)="saveBusiness(businessform)">{{business.idNegocio==null?'Guardar':'Actualizar'}}</button>
+    <button type="button" class="btn btn-primary"
+      (click)="saveBusiness(businessform)">{{business.idNegocio==null?'Guardar':'Actualizar'}}</button>
   </div>
 </form>

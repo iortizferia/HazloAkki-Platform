@@ -34,6 +34,9 @@
                         <div class="text-danger" *ngIf="valForm.controls['password'].hasError('required') && 
                         (valForm.controls['password'].dirty || valForm.controls['password'].touched)">Este campo es obligatorio</div>
                     </div>
+                    <div *ngIf="errorLogin!=null" class="text-danger" role="alert">
+                        Usuario/Contraseña incorrectos!
+                    </div>
                     <div class="clearfix">
                         <div class="checkbox c-checkbox float-left mt0">
                             <label>

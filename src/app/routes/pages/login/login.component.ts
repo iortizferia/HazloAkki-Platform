@@ -13,6 +13,7 @@ import { AuthService } from '../../../core/auth/auth.service';
 export class LoginComponent implements OnInit {
 
     valForm: FormGroup;
+    errorLogin: string;
 
     constructor(public settings: SettingsService, 
         fb: FormBuilder, private route:Router,
@@ -36,6 +37,7 @@ export class LoginComponent implements OnInit {
                 this.route.navigate(["home"]);
             },error =>{
                 console.error("Error login", error);
+                this.errorLogin = error.message;
             })            
         }
     }

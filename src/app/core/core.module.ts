@@ -5,11 +5,7 @@ import { ThemesService } from './themes/themes.service';
 import { MenuService } from './menu/menu.service';
 
 import { throwIfAlreadyLoaded } from './module-import-guard';
-import { ApiPrefixInterceptor } from './interceptors/api-prefix.interceptor';
 import { ErrorHandlerInterceptor } from './interceptors/error-handler.interceptor';
-import { CacheInterceptor } from './interceptors/cache.interceptor';
-import { HttpService } from './http/http.service';
-import { HttpClient } from '@angular/common/http';
 @NgModule({
     imports: [
     ],
@@ -17,14 +13,7 @@ import { HttpClient } from '@angular/common/http';
         SettingsService,
         ThemesService,
         MenuService,
-        ApiPrefixInterceptor,
-        ErrorHandlerInterceptor,
-        HttpService,
-        CacheInterceptor,
-        {
-            provide: HttpClient,
-            useClass: HttpService
-        }
+        ErrorHandlerInterceptor
     ],
     declarations: [],
     exports: []
