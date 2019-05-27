@@ -10,6 +10,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { NgxSelectModule } from 'ngx-select-ex'
 import { TextMaskModule } from 'angular2-text-mask';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 
 import { FlotDirective } from './directives/flot/flot.directive';
 import { SparklineDirective } from './directives/sparkline/sparkline.directive';
@@ -32,6 +33,7 @@ import { NowDirective } from './directives/now/now.directive';
         ModalModule.forRoot(),
         CarouselModule.forRoot(),
         TabsModule.forRoot(),
+        TimepickerModule.forRoot(),
         NgxSelectModule,
         TextMaskModule
     ],
@@ -64,6 +66,7 @@ import { NowDirective } from './directives/now/now.directive';
         ScrollableDirective,
         EasypiechartDirective,
         VectormapDirective,
+        TimepickerModule,
         NgxSelectModule,
         TextMaskModule
     ]

@@ -34,7 +34,6 @@
               <th>Imagen</th>
               <th>Nombre</th>
               <th>Dirección</th>
-              <th>Horario</th>
               <th>Responsable</th>
               <th>Estatus</th>
             </tr>
@@ -51,16 +50,14 @@
               </td>
               <td>
                 <div class="media">
-                  <img class="img-fluid circle" src="assets/img/business-default.png" alt="Image" />
+                  <img class="img-fluid circle" [src]="business.urlProfile?business.urlProfile:'assets/img/business-default.png'" alt="Image" />
                 </div>
               </td>
               <td>{{business.nombre}}</td>
               <td>{{business.calle +' ' + business.numeroExterior+', '+business.colonia+', '+business.delegacion}} </td>
-              <td>{{business.horario}}</td>
               <td>{{business.responsable}}</td>
               <td>
-                <div *ngIf="business.estatus" class="badge badge-success">Activo</div>
-                <div *ngIf="!business.estatus" class="badge badge-danger">Eliminado</div>
+                <div *ngIf="business.idEstatus == 1" class="badge badge-success">Activo</div>
               </td>
             </tr>
           </tbody>

@@ -3,8 +3,11 @@ export class Imagen {
     idNegocio: string;
     rutaImagen: any;
     perfil: boolean;
+    idexFile: number;
 
     constructor(rutaImagen: any) {
         this.rutaImagen = rutaImagen;
+        this.idImagen = null;
+        this.idNegocio = null;
     }
 }

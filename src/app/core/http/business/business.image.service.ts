@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -19,11 +19,19 @@ export class BusinessImageService {
     );    
   }
 
-  guardarImagenes(idNegocio:string, imagenes: Array<Imagen>):Observable<Array<Imagen>>{
-    return this.httpService.post(environment.negocio_url+"negocios/"+idNegocio+"/imagenes", imagenes)
+  guardarImagenes(idNegocio:string, formData:FormData):Observable<Array<Imagen>>{
+    return this.httpService.post(environment.negocio_url+"negocios/"+idNegocio+"/imagenes", formData)
     .pipe(
       map((imagenes:Array<Imagen>) => imagenes)
     );
+  }
+
+  actualizarPerfil(idNegocio:string, idImagen:string):Observable<Object>{
+    return this.httpService.put(environment.negocio_url+"negocios/"+idNegocio+"/imagenes/"+idImagen,{});
+  }
+
+  eliminarImagen(idNegocio:string, idImagen:string):Observable<Object>{
+    return this.httpService.delete(environment.negocio_url+"negocios/"+idNegocio+"/imagenes/"+idImagen);
   }
 
 }

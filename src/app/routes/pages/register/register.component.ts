@@ -15,6 +15,7 @@ export class RegisterComponent implements OnInit {
 
     registerForm: FormGroup;
     passwordForm: FormGroup;
+    mask = ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
 
     constructor(public settings: SettingsService, 
         fb: FormBuilder, private route:Router,
@@ -53,7 +54,7 @@ export class RegisterComponent implements OnInit {
             newAccount.apellidos = value.lastname;
             newAccount.email = value.email;
             newAccount.password = value.passwordGroup.password;
-            newAccount.telefono = value.phone;
+            newAccount.telefono = value.phone.replace(/\D+/g, '');;
             newAccount.estatus = true;
 
             this.accountService.addAccount(newAccount).subscribe(

@@ -1,12 +1,14 @@
+import { OfferConfiguration } from "./offer.config.model";
+
 export class Offer {
-    id: string;
-    titulo: string;
-    mensaje: string;
-    imagenes: string;
-    fecha: string;
-    duracion: string;
+    idOferta: string;
     idNegocio: string;
-    estatus: boolean;
+    titulo: string;
+    descripcion: string;
+    fechaAlta: string;
+    fechaModificacion: string;
+    configuracion: OfferConfiguration;
+    acciones: Array<number>;
 
     constructor(idNegocio: string) {
         this.idNegocio = idNegocio;

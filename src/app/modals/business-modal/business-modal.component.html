@@ -164,16 +164,16 @@
         </div>
         <div class="row">
           <div class="card-columns">
-            <div class="card border-primary" *ngFor="let img of imagenes">
+            <div class="card border-primary" *ngFor="let img of imagenes; let index=index">
               <img [src]="img.rutaImagen" class="card-img-top" height="200px" alt="...">
               <div class="card-footer border-primary">
                 <div class="c-radio float-left">
                   <label>
-                    <input type="radio" [checked]="img.perfil" name="perfil" />
+                    <input type="radio" name="perfil" [value]="index" [(ngModel)]="imgProfileSelected" />
                     <span class="fa fa-circle"></span>Perfíl?
                   </label>
                 </div>
-                <button type="button" class="btn btn-danger btn-xs float-right">
+                <button type="button" class="btn btn-danger btn-xs float-right" (click)="eliminarImagen(index)">
                   <span class="icon-trash mr"></span>
                 </button>
               </div>

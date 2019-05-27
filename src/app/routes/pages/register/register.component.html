@@ -9,12 +9,14 @@
             </div>
             <div class="card-body">
                 <p class="text-center py-2">REGISTRA TU LOCAL EN HAZLOAKKI</p>
-                <form [formGroup]="registerForm" class="form-validate mb-3" role="form" novalidate="" (submit)="submitForm($event, registerForm.value)">
+                <form [formGroup]="registerForm" class="form-validate mb-3" role="form" novalidate=""
+                    (submit)="submitForm($event, registerForm.value)">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label class="text-muted mb-1">Nombre</label>
                             <div class="input-group with-focus">
-                                <input class="form-control" name="name" autocomplete="off" formControlName="name" required="" />
+                                <input class="form-control" name="name" autocomplete="off" formControlName="name"
+                                    required="" />
                             </div>
                             <div class="text-danger" *ngIf="registerForm.controls['name'].hasError('required') && 
                         (registerForm.controls['name'].dirty ||
@@ -23,7 +25,8 @@
                         <div class="form-group col-md-6">
                             <label class="text-muted mb-1">Apellidos</label>
                             <div class="input-group with-focus">
-                                <input class="form-control" name="lastname" autocomplete="off" formControlName="lastname" required="" />
+                                <input class="form-control" name="lastname" autocomplete="off"
+                                    formControlName="lastname" required="" />
                             </div>
                             <div class="text-danger" *ngIf="registerForm.controls['lastname'].hasError('required') && 
                             (registerForm.controls['lastname'].dirty || 
@@ -33,22 +36,30 @@
                     <div class="form-group">
                         <label class="text-muted mb-1">Correo electrónico</label>
                         <div class="input-group with-focus">
-                            <input class="form-control border-right-0" type="email" autocomplete="off" formControlName="email" required="" />
+                            <input class="form-control border-right-0" type="email" autocomplete="off"
+                                formControlName="email" required="" />
                             <div class="input-group-append">
-                                <span class="input-group-text fa fa-envelope text-muted bg-transparent border-left-0"></span>
+                                <span
+                                    class="input-group-text fa fa-envelope text-muted bg-transparent border-left-0"></span>
                             </div>
                         </div>
-                        <div class="text-danger" *ngIf="registerForm.controls['email'].hasError('required') && (registerForm.controls['email'].dirty || registerForm.controls['email'].touched)">El correo es obligatorio</div>
-                        <div class="text-danger" *ngIf="registerForm.controls['email'].hasError('email') && (registerForm.controls['email'].dirty || registerForm.controls['email'].touched)">Formato de correo incorrecto</div>
+                        <div class="text-danger"
+                            *ngIf="registerForm.controls['email'].hasError('required') && (registerForm.controls['email'].dirty || registerForm.controls['email'].touched)">
+                            El correo es obligatorio</div>
+                        <div class="text-danger"
+                            *ngIf="registerForm.controls['email'].hasError('email') && (registerForm.controls['email'].dirty || registerForm.controls['email'].touched)">
+                            Formato de correo incorrecto</div>
                     </div>
                     <div formGroupName="passwordGroup">
                         <div class="form-group">
                             <label class="text-muted mb-1">Contraseña</label>
                             <div class="input-group with-focus">
-                                <input class="form-control border-right-0" id="id-password" type="password" name="password" formControlName="password" [formControl]="registerForm.get('passwordGroup.password')"
-                                />
+                                <input class="form-control border-right-0" id="id-password" type="password"
+                                    name="password" formControlName="password"
+                                    [formControl]="registerForm.get('passwordGroup.password')" />
                                 <div class="input-group-append">
-                                    <span class="input-group-text fa fa-lock text-muted bg-transparent border-left-0"></span>
+                                    <span
+                                        class="input-group-text fa fa-lock text-muted bg-transparent border-left-0"></span>
                                 </div>
                             </div>
                             <div class="text-danger" *ngIf="registerForm.get('passwordGroup.password').hasError('required') && 
@@ -58,36 +69,46 @@
                         <div class="form-group">
                             <label class="text-muted mb-1">Repetir contraseña</label>
                             <div class="input-group with-focus">
-                                <input class="form-control border-right-0" type="password" name="confirmPassword" formControlName="confirmPassword" [formControl]="registerForm.get('passwordGroup.confirmPassword')"
-                                />
+                                <input class="form-control border-right-0" type="password" name="confirmPassword"
+                                    formControlName="confirmPassword"
+                                    [formControl]="registerForm.get('passwordGroup.confirmPassword')" />
                                 <div class="input-group-append">
-                                    <span class="input-group-text fa fa-lock text-muted bg-transparent border-left-0"></span>
+                                    <span
+                                        class="input-group-text fa fa-lock text-muted bg-transparent border-left-0"></span>
                                 </div>
                             </div>
-                            <div class="text-danger" *ngIf="registerForm.get('passwordGroup.confirmPassword').hasError('required') && (registerForm.get('passwordGroup.confirmPassword').dirty || registerForm.get('passwordGroup.confirmPassword').touched)">Este campo es obligatorio</div>
-                            <div class="text-danger" *ngIf="registerForm.get('passwordGroup.confirmPassword').hasError('equalTo')">La contraseña no coinciden</div>
+                            <div class="text-danger"
+                                *ngIf="registerForm.get('passwordGroup.confirmPassword').hasError('required') && (registerForm.get('passwordGroup.confirmPassword').dirty || registerForm.get('passwordGroup.confirmPassword').touched)">
+                                Este campo es obligatorio</div>
+                            <div class="text-danger"
+                                *ngIf="registerForm.get('passwordGroup.confirmPassword').hasError('equalTo')">La
+                                contraseña no coinciden</div>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col">
                             <label class="text-muted mb-1">Teléfono</label>
                             <div class="input-group">
-                                <input class="form-control" type="number" maxlength="10" name="phone" autocomplete="off" formControlName="phone">
+                                <input class="form-control form-control-sm" [textMask]="{mask: mask}" name="phone" formControlName="phone" />
                             </div>
                             <div class="text-danger" *ngIf="registerForm.controls['phone'].hasError('required') && 
-                    (registerForm.controls['phone'].dirty || registerForm.controls['phone'].touched)">Campo obligatorio</div>
+                    (registerForm.controls['phone'].dirty || registerForm.controls['phone'].touched)">Campo obligatorio
+                            </div>
                         </div>
                     </div>
                     <div class="clearfix">
                         <div class="checkbox c-checkbox float-left mt0">
                             <label>
-                                <input type="checkbox" required="" name="account_agreed" formControlName="accountagreed" />
+                                <input type="checkbox" required="" name="account_agreed"
+                                    formControlName="accountagreed" />
                                 <span class="fa fa-check"></span>Estoy de acuerdo con los
                                 <a href="#">terminos</a>
                             </label>
                         </div>
                     </div>
-                    <span class="text-danger" *ngIf="registerForm.controls['accountagreed'].hasError('required') && (registerForm.controls['accountagreed'].dirty || registerForm.controls['accountagreed'].touched)">You must agree the terms</span>
+                    <span class="text-danger"
+                        *ngIf="registerForm.controls['accountagreed'].hasError('required') && (registerForm.controls['accountagreed'].dirty || registerForm.controls['accountagreed'].touched)">You
+                        must agree the terms</span>
                     <button class="btn btn-block btn-primary mt-3" type="submit">Crear cuenta</button>
                 </form>
                 <!-- <div class="alert alert-danger text-center"></div> -->
@@ -101,7 +122,7 @@
             <span>{{ settings.getAppSetting('year') }}</span>
             <span class="mx-2">-</span>
             <span>{{ settings.getAppSetting('name') }}</span>
-            <br/>
+            <br />
             <span>{{ settings.getAppSetting('description') }}</span>
         </div>
     </div>

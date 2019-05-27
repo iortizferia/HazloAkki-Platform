@@ -36,7 +36,7 @@ export class BusinessModalComponent implements OnInit {
   pMethods = { methods: new Array<PaymentMethod>(), currentPmethods: new Array<string>() };
   services = { svc: new Array<Service>(), currentServices: new Array<string>() };
   cards = { types: new Array<CardType>(), currentCardTypes: new Array<string>() };
-  actions = { actions: new Array<Accion>(), currentActions: new Array<number>() };
+  actions = { actions: new Array<Accion>(), currentActions: new Array<string>() };
   currentLocation = new MXLocation();
 
   business: Business;
@@ -64,15 +64,15 @@ export class BusinessModalComponent implements OnInit {
 
   horarios = new Array<Horario>();
   dias = new Array<Dia>();
-  catHoras = [ { hora: "0" }, { hora: "1" },
-    { hora: "08:00 AM" }, { hora: "08:30 AM" }, { hora: "09:00 AM" }, { hora: "09:30 AM" },
-    { hora: "10:00 AM" }, { hora: "10:30 AM" }, { hora: "11:00 AM" }, { hora: "11:30 AM" },
-    { hora: "12:00 PM" }, { hora: "12:30 PM" }, { hora: "01:00 PM" }, { hora: "01:30 PM" },
-    { hora: "02:00 PM" }, { hora: "02:30 PM" }, { hora: "03:00 PM" }, { hora: "03:30 PM" },
-    { hora: "04:00 PM" }, { hora: "04:30 PM" }, { hora: "05:00 PM" }, { hora: "05:30 PM" },
-    { hora: "06:00 PM" }, { hora: "06:30 PM" }, { hora: "07:00 PM" }, { hora: "07:30 PM" },
-    { hora: "08:00 PM" }, { hora: "08:30 PM" }, { hora: "09:00 PM" }, { hora: "09:30 PM" },
-    { hora: "10:00 PM" }, { hora: "10:30 PM" }
+  catHoras = [{ hora: "0" }, { hora: "1" },
+  { hora: "08:00 AM" }, { hora: "08:30 AM" }, { hora: "09:00 AM" }, { hora: "09:30 AM" },
+  { hora: "10:00 AM" }, { hora: "10:30 AM" }, { hora: "11:00 AM" }, { hora: "11:30 AM" },
+  { hora: "12:00 PM" }, { hora: "12:30 PM" }, { hora: "01:00 PM" }, { hora: "01:30 PM" },
+  { hora: "02:00 PM" }, { hora: "02:30 PM" }, { hora: "03:00 PM" }, { hora: "03:30 PM" },
+  { hora: "04:00 PM" }, { hora: "04:30 PM" }, { hora: "05:00 PM" }, { hora: "05:30 PM" },
+  { hora: "06:00 PM" }, { hora: "06:30 PM" }, { hora: "07:00 PM" }, { hora: "07:30 PM" },
+  { hora: "08:00 PM" }, { hora: "08:30 PM" }, { hora: "09:00 PM" }, { hora: "09:30 PM" },
+  { hora: "10:00 PM" }, { hora: "10:30 PM" }
   ];
 
   uploader: FileUploader = new FileUploader({ isHTML5: true });
@@ -102,6 +102,8 @@ export class BusinessModalComponent implements OnInit {
   }
 
   imagenes = new Array<Imagen>();
+  imgToDelete = new Array<Imagen>();
+  imgProfileSelected = 0;
 
   ngOnInit() {
     this.uploader.onAfterAddingFile = (file) => {
@@ -109,7 +111,10 @@ export class BusinessModalComponent implements OnInit {
       var reader = new FileReader();
       reader.readAsDataURL(file._file);
       reader.onload = (_event) => {
-        this.imagenes.push(new Imagen(reader.result));
+        let newImage = new Imagen(reader.result);
+        newImage.idexFile = this.uploader.queue.length - 1;
+        this.imgProfileSelected = this.imagenes.length === 0 ? 0: this.imgProfileSelected;
+        this.imagenes.push(newImage);
       }
     };
 
@@ -154,24 +159,29 @@ export class BusinessModalComponent implements OnInit {
       this.business.servicios.map((serv => this.services.currentServices.push(serv.id)));
       this.business.metodoPago.map((method => this.pMethods.currentPmethods.push(method.id)));
       this.business.tipoTarjeta.map((cardType => this.cards.currentCardTypes.push(cardType.id)));
-      this.business.acciones.map(idAccion => this.actions.currentActions.push(idAccion));
+      this.business.acciones.forEach(idAccion => this.actions.currentActions.push(""+idAccion));
 
       this.business.horario.map(horario => {
         let dia = this.dias[horario.idDia - 1];
         dia.abierto = horario.abierto;
         dia.veintiCuatroHrs = horario.veinticuatroHrs;
-        dia.horario.push(new Horario(horario.abre, horario.abre));
+        dia.horario = new Array<Horario>();
+        dia.horario.push(new Horario(horario.abre, horario.cierra));
       });
 
       this.businessImageService.obtenerImagenes(this.business.idNegocio).subscribe(imagenes => {
         console.log("Recuperando imagenes", imagenes);
         this.imagenes = imagenes;
+        this.imagenes.forEach( (img, index) =>{
+          if(img.perfil)
+            this.imgProfileSelected = index;
+        });
       });
 
-      this.location.lat = this.business.latitud;
-      this.location.lng = this.business.longitud;
-      this.location.marker.lat = this.business.latitud;
-      this.location.marker.lng = this.business.longitud;
+      this.location.lat = Number(this.business.latitud);
+      this.location.lng = Number(this.business.longitud);
+      this.location.marker.lat = Number(this.business.latitud);
+      this.location.marker.lng = Number(this.business.longitud);
       this.getLocation(this.business.codigoPostal, null, false);
     }
 
@@ -241,11 +251,13 @@ export class BusinessModalComponent implements OnInit {
       this.business.servicios = new Array<Service>();
       this.business.metodoPago = new Array<PaymentMethod>();
       this.business.tipoTarjeta = new Array<CardType>();
+      this.business.acciones = new Array<number>();
+      this.business.horario = new Array<HorarioNegocio>();
 
       this.services.currentServices.map(serviceId => this.business.servicios.push(new Service(serviceId)));
       this.pMethods.currentPmethods.map(methodId => this.business.metodoPago.push(new PaymentMethod(methodId)));
       this.cards.currentCardTypes.map(cardTypeId => this.business.tipoTarjeta.push(new CardType(cardTypeId)));
-      this.actions.currentActions.map(idAccion => this.business.acciones.push(idAccion));
+      this.actions.currentActions.map(idAccion => this.business.acciones.push(Number(idAccion)));
 
       this.dias.map(dia => {
         let horario = new HorarioNegocio();
@@ -255,11 +267,17 @@ export class BusinessModalComponent implements OnInit {
         horario.veinticuatroHrs = dia.veintiCuatroHrs;
 
         dia.horario.forEach(h => {
+          if(h.abre == '1' || h.cierra == '1'){
+            horario.veinticuatroHrs = true;
+            return;
+          }
           horario.abre = h.abre;
           horario.cierra = h.cierra;
         })
         this.business.horario.push(horario);
-      });      
+      });
+
+      console.log("Horarios a guardar", this.business.horario);
 
       //Set location
       this.business.latitud = this.location.marker.lat;
@@ -271,11 +289,12 @@ export class BusinessModalComponent implements OnInit {
       this.business.idEstatus = 1;
 
       console.log("Business", this.business);
-
+      
       if (this.business.idNegocio != null && this.business.idNegocio != '') {
         this.businessService.update(this.business).subscribe(
           updateBusiness => {
             console.log("Se actualizó correctament el negocio", updateBusiness);
+            this.uploadImagen(this.business.idNegocio);
             this.onSaved(true);
           },
           error => {
@@ -286,6 +305,7 @@ export class BusinessModalComponent implements OnInit {
         this.businessService.create(this.business).subscribe(
           newBusiness => {
             console.log("Se guardo correctament el negocio", newBusiness);
+            this.uploadImagen(newBusiness.idNegocio);
             this.onSaved(true);
           },
           error => {
@@ -293,6 +313,67 @@ export class BusinessModalComponent implements OnInit {
             this.onSaved(false);
           });
       }
+    }
+  }
+
+  eliminarImagen(index:number){
+    let imagen = this.imagenes[index];
+    this.imagenes.splice(index, 1);
+    this.uploader.queue.splice(index, 1); 
+    if(imagen.idImagen != null){
+      this.imgToDelete.push(imagen);
+    }  
+    this.imgProfileSelected = 0;
+  }
+
+  uploadImagen(idNegocio: string) {    
+    this.imagenes[this.imgProfileSelected].perfil = true;
+    let data = new FormData();
+    console.log("Subiendo imagen")    
+    this.imagenes.forEach(img => {
+      console.log("Iterando", img);
+      if (img.idImagen === null) {
+        let file = this.uploader.queue[img.idexFile]._file;
+        data.append("imagenes", file);
+        if (img.perfil) {
+          console.log("La imagen de perfil es "+ file.name);
+          data.append("profile", file.name);
+        }
+      }
+    });
+
+    let imagePerfil = this.imagenes[this.imgProfileSelected];
+    console.log("Validando idImagePerfil", data);
+    if(imagePerfil!=null && imagePerfil.idImagen 
+      && !imagePerfil.idImagen===null ){
+      console.log("Actualizando imagen como perfil", imagePerfil.idImagen );
+      //Actualizar imagen perfíl
+      this.businessImageService.actualizarPerfil(idNegocio, imagePerfil.idImagen).subscribe( ok => {
+        console.log("Se guardo correctamente la imagen");
+      }, error =>{
+        console.error("Error al actualizar la imagen como perfil", error)
+      });
+    }
+    console.log("Comprobando tag imagenes")
+    if(data.has("imagenes")){
+      console.log("Se tiene el form de imagenes");
+      if(!data.has("profile")){
+        let file = this.uploader.queue[0]._file;
+        console.log("No se tiene seleccionado un perfil se tomara ", file.name);        
+        data.append("profile", file.name);
+      }
+      //Subir imagen
+      this.businessImageService.guardarImagenes(idNegocio, data).subscribe( ok => {
+        console.log("Se guardaron correctamente las imagenes nuevas");
+      }, error =>{
+        console.error("Error al guardar las imagenes", error)
+      });
+    }
+    if(this.imgToDelete.length>0){
+      console.info("Eliminando imagenes");
+      this.imgToDelete.forEach(imgToDelete =>{
+        this.businessImageService.eliminarImagen(idNegocio, imgToDelete.idImagen).subscribe();
+      });      
     }
   }
 

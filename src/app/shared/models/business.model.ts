@@ -25,4 +25,5 @@ export class Business {
     tipoTarjeta: Array<CardType>;
     acciones: Array<number>;
     horario: Array<HorarioNegocio>;
+    urlProfile: string;
 }

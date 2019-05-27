@@ -5,6 +5,7 @@ metadata:
   labels:
     run: hazloakki-platform
 spec:
+  type: LoadBalancer
   ports:
   - port: 80
     targetPort: 80

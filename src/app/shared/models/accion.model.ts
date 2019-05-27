@@ -1,10 +1,10 @@
 export class Accion {
-    idAccion: string;
+    idAccion: number;
     nombre: string;
     descripcion: string;
     estatus: boolean;
 
-    constructor(idAccion: string, nombre: string) {
+    constructor(idAccion: number, nombre: string) {
         this.idAccion = idAccion;
         this.nombre = nombre;
     }

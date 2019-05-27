@@ -6,50 +6,71 @@
 </div>
 <form role="form" novalidate #offerform="ngForm">
   <div class="modal-body">
-    <div class="ml-auto clearfix"></div>
-    <div class="row">
-      <div class="col-xl-6">
-        <div class="typeahead-ctrl">
-          <div class="form-group">
-            <label>Titulo</label>
-            <input type="text" class="form-control" name="title" [(ngModel)]="offer.titulo" required [ngClass]="{ 'is-invalid': submitted && offerform.controls.title.errors }" >
+    <tabset>
+      <tab heading="Datos" id="tab1">
+        <fieldset>
+          <div class="form-group row">
+            <div class="col">
+              <label> <b>Titulo</b></label>
+              <input class="form-control" name="titulo" [(ngModel)]="offer.titulo" required
+              [ngClass]="{ 'is-invalid': submitted && offerform.controls.titulo.errors }"/>
+            </div>
           </div>
-          <div class="form-group">
-            <label>Mensaje</label>
-            <textarea class="form-control" rows="4" name="message" [(ngModel)]="offer.mensaje" required [ngClass]="{ 'is-invalid': submitted && offerform.controls.message.errors }" ></textarea>
+        </fieldset>
+        <fieldset>
+          <div class="form-group row">
+            <div class="col">
+              <label> <b>Descripción</b></label>
+              <textarea class="form-control" rows="5" name="descripcion" [(ngModel)]="offer.descripcion" required
+              [ngClass]="{ 'is-invalid': submitted && offerform.controls.descripcion.errors }" ></textarea>
+            </div>
           </div>
-          <div class="form-group">
-            <label>Duración</label>
-            <input type="text" class="form-control" name="duration" [(ngModel)]="offer.duracion" required [ngClass]="{ 'is-invalid': submitted && offerform.controls.duration.errors }">
+        </fieldset>
+        <fieldset>
+          <div class="form-group row">
+            <div class="col">
+              <label> <b>Tags</b> - Acciones que se realacionan con la oferta</label>
+              <ngx-select [multiple]="true" [items]="actions.actions" name="actions"
+                [(ngModel)]="actions.currentActions" optionValueField="idAccion" optionTextField="nombre"
+                placeholder="Ej. Comer, Beber">
+              </ngx-select>
+            </div>
+          </div>
+        </fieldset>
+      </tab>
+      <tab heading="Imagenes">
+        <div class="row mb-2">
+          <div class="col">
+            <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
+              [uploader]="uploader" class="box-placeholder my-drop-zone text-center">
+              Arrastra una foto aquí.
+              O bien
+              <label for="file2" class="file-upload">
+                <button class="btn btn-xs btn-primary">Selecciona una imagen</button>
+                <input id="file2" type="file" ng2FileSelect [uploader]="uploader" />
+              </label>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-xl-6">
-        <div class="clearfix">
-          <button class="btn btn-primary btn-xs float-right mb-1" type="button">
-            <i class="icon-plus fa-md mr-1"></i>
-            <span>Agregar imagen</span>
-          </button>
-        </div>
-        <div>
-          <carousel [interval]="5000" [noWrap]="false">
-            <slide [active]="true">
-              <img src="assets/img/offer03.jpg" class="img-fluid">
-              <div class="carousel-caption">
+        <div class="row">
+          <div class="card-columns">
+            <div class="card border-primary" *ngFor="let img of imagenes; let index=index">
+              <img [src]="img.rutaImagen" class="card-img-top" height="200px" alt="...">
+              <div class="card-footer border-primary text-center">
+                <button type="button" class="btn btn-danger btn-xs" (click)="eliminarImagen(index)">
+                  <span class="icon-trash mr"></span>
+                </button>
               </div>
-            </slide>
-            <slide [active]="false">
-              <img src="assets/img/offer04.jpg" class="img-fluid">
-              <div class="carousel-caption">
-              </div>
-            </slide>
-          </carousel>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </tab>
+    </tabset>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Cancelar</button>
-    <button type="button" class="btn btn-primary" (click)="createOffer(offerform)" >Guardar</button>
+    <button type="button" class="btn btn-primary" (click)="sheduleOferta(offerform)">Programar</button>
+    <button type="button" class="btn btn-primary" (click)="guardarActualizarOferta(offerform)">Guardar</button>
+    <button type="button" class="btn btn-success" (click)="publicarOfertaAhora(offerform)">Publicar</button>
   </div>
 </form>

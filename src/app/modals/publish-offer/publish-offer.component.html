@@ -1,0 +1,126 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{tituloOferta}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<form role="form" novalidate #programarform="ngForm">
+  <div class="modal-body">
+    <div *ngIf="accion == 2"><!--Solo se muestra cuando sea programar oferta-->
+      <div class="form-group row">
+        <div class="col">
+          <label>Fecha Inicio</label>
+          <input type="datetime-local" class="form-control" name="fechaInicio" [(ngModel)]="offerConfig.inicio" [required]="programar"
+          [ngClass]="{ 'is-invalid': submitted && programarform.controls.fechaInicio?.errors}">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col">
+          <label>Fecha Fin</label>
+          <input type="datetime-local" class="form-control" name="fechaFin" [(ngModel)]="offerConfig.fin">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-6">
+          <label>Recordatorio Inicio</label>
+          <select class="form-control form-control-sm" name="rinicio" [(ngModel)]="offerConfig.idRecordatorioInicio" required
+          [ngClass]="{ 'is-invalid': submitted && programarform.controls.rinicio.errors}">
+            <option selected value="0">Ninguno</option>
+            <option value="1">Hora exacta</option>
+            <option value="2">5. min antes</option>
+            <option value="3">10. min antes</option>
+            <option value="4">15. min antes</option>
+            <option value="5">30. min antes</option>
+            <option value="6">1 hora antes</option>
+            <option value="7">1 día antes</option>
+          </select>
+        </div>
+        <div class="col">
+          <label>Recordatorio Fin</label>
+          <select class="form-control form-control-sm" name="rfin" [(ngModel)]="offerConfig.idRecordatorioFin" required
+          [ngClass]="{ 'is-invalid': submitted && programarform.controls.rfin.errors}">
+            <option selected value="0">Ninguno</option>
+            <option value="1">Hora exacta</option>
+            <option value="2">5. min antes</option>
+            <option value="3">10. min antes</option>
+            <option value="4">15. min antes</option>
+            <option value="5">30. min antes</option>
+            <option value="6">1 hora antes</option>
+            <option value="7">1 día antes</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-6">
+        <label>Sexo</label>
+        <div class="btn-group">
+          <button class="btn btn-secondary" [ngClass]="{'active': offerConfig.idSexo == 1}" type="button" (click)="offerConfig.idSexo = 1">Todos</button>
+          <button class="btn btn-secondary" [ngClass]="{'active': offerConfig.idSexo == 2}" type="button" (click)="offerConfig.idSexo = 2">Hombres</button>
+          <button class="btn btn-secondary" [ngClass]="{'active': offerConfig.idSexo == 3}" type="button" (click)="offerConfig.idSexo = 3">Mujeres</button>
+        </div>
+      </div>
+      <div class="col">
+        <label>Edad</label>
+        <select class="form-control form-control-sm" name="edadDe" [(ngModel)]="offerConfig.edadDe" required
+        [ngClass]="{ 'is-invalid': submitted && programarform.controls.edadDe.errors}">
+          <option selected value="0">10</option>
+          <option value="1">11</option>
+          <option value="2">12</option>
+          <option value="3">13</option>
+          <option value="4">14</option>
+          <option value="5">15</option>
+          <option value="6">16</option>
+          <option value="7">17</option>
+        </select>
+      </div>
+      <div class="col">
+        <label>&nbsp;&nbsp;</label>
+        <select class="form-control form-control-sm" name="edadA" [(ngModel)]="offerConfig.edadA" required
+        [ngClass]="{ 'is-invalid': submitted && programarform.controls.edadA.errors}">
+          <option selected value="0">10</option>
+          <option value="1">11</option>
+          <option value="2">12</option>
+          <option value="3">13</option>
+          <option value="4">14</option>
+          <option value="5">15</option>
+          <option value="6">16</option>
+          <option value="7">17</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col">
+        <label>Cupón</label>
+        <input type="text" class="form-control" name="cupon" [(ngModel)]="offerConfig.cupon" required
+        [ngClass]="{ 'is-invalid': submitted && programarform.controls.cupon.errors}" />
+      </div>
+      <div class="col">
+        <label>Precio</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">$</span>
+          </div>
+          <input class="form-control" type="number" name="precio" [(ngModel)]="offerConfig.precio" required
+          [ngClass]="{ 'is-invalid': submitted && programarform.controls.precio.errors}" />
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col">
+        <label>Cobertura</label>
+        <div class="input-group">
+          <input class="form-control" type="text" name="distancia" [(ngModel)]="offerConfig.distancia" required
+          [ngClass]="{ 'is-invalid': submitted && programarform.controls.distancia.errors}" />
+          <div class="input-group-append">
+            <span class="input-group-text">Km</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default btn-sm" (click)="bsModalRef.hide()">Cancelar</button>
+    <button type="button" class="btn btn-success btn-sm" (click)="publicar(programarform)">{{accion==3?'Publicar':'Programar'}}</button>
+  </div>
+</form>

@@ -1,17 +1,23 @@
 <div class="content-heading">
   Ofertas
   <div class="ml-auto">
-    <button class="btn btn-sm btn-secondary" type="button">
-      <em class="fas fa-pencil-alt"></em>
-    </button>
-    <button class="btn btn-sm btn-danger ml-1" type="button">
-      <em class="fas fa-trash-alt"></em>
-    </button>
-    <button class="btn btn-sm btn-success ml-1" type="button">
-      <em class="fa fa-check"></em>Publicar
+    <div class="btn-group mr-2" dropdown>
+      <button class="btn dropdown-toggle btn-secondary" type="button" dropdownToggle>Acción
+        <span class="caret"></span>
+      </button>
+      <div *dropdownMenu class="dropdown-menu" role="menu">        
+        <a class="dropdown-item" href="#" [ngClass]="{'disabled':!offerSelectedId}" (click)="editarOffer()">Editar</a>        
+        <a class="dropdown-item" href="#" [ngClass]="{'disabled':!offerSelectedId}" (click)="cancelOffer()">Cancelar</a>
+        <a class="dropdown-item" href="#" [ngClass]="{'disabled':!offerSelectedId}" (click)="deleteOffer()">Eliminar</a>
+        <a class="dropdown-item" href="#" [ngClass]="{'disabled':!offerSelectedId}" (click)="sheduleOferta(2)">Programar</a>
+      </div>
+    </div>
+    <button class="btn btn-sm btn-success ml-1" type="button" (click)="sheduleOferta(3)"
+      [disabled]="!offerSelectedId && (!bSelectedId || bSelectedId==='-1' || bSelectedId=='')">
+      <span>Publicar</span>
     </button>
     <button class="btn btn-sm btn-primary ml-1" type="button" (click)="createOffer()"
-     [disabled] = "!bSelectedId || bSelectedId==='-1' || bSelectedId==''">
+      [disabled]="!bSelectedId || bSelectedId==='-1' || bSelectedId==''">
       <i style="padding-right:5px" class="icon-plus fa-lg fa-align-left"></i>
       <span>Crear oferta</span>
     </button>
@@ -35,9 +41,9 @@
               <th></th>
               <th>Titulo</th>
               <th>Descripción</th>
-              <th>Negocio</th>
-              <th>Status</th>
-              <th>Imagenes</th>
+              <th>Inicio</th>
+              <th>Fin</th>
+              <th>Estatus</th>
             </tr>
           </thead>
           <tbody>
@@ -45,18 +51,23 @@
               <td>
                 <div class="c-radio">
                   <label>
-                    <input type="radio" name="radio" />
+                    <input type="radio" name="radio" (click)="offerSelectedId=offer.idOferta" />
                     <span class="fa fa-circle"></span>
                   </label>
                 </div>
               </td>
               <td>{{offer.titulo}}</td>
-              <td>{{offer.mensaje}}</td>
-              <td>Hooters Insurgentes</td>
+              <td>{{offer.descripcion}}</td>
+              <td>{{offer.configuracion.inicio == null ? 'NA' : offer.configuracion.inicio}}</td>
+              <td>{{offer.configuracion.fin == null ? 'NA' : offer.configuracion.fin}}</td>
               <td>
-                <div class="badge badge-success">Publicado</div>
+                <div class="badge badge-primary" *ngIf="offer.configuracion.idEstatus == 1">Creado</div>
+                <div class="badge badge-primary" *ngIf="offer.configuracion.idEstatus == 2">Programado</div>
+                <div class="badge badge-success" *ngIf="offer.configuracion.idEstatus == 3">Publicado</div>
+                <div class="badge badge-warning" *ngIf="offer.configuracion.idEstatus == 4">Cancelado</div>
+                <div class="badge badge-danger" *ngIf="offer.configuracion.idEstatus == 5">Eliminado</div>
+                <div class="badge badge-primary" *ngIf="offer.configuracion.idEstatus == 6">Reprogramado</div>
               </td>
-              <td><a class="btn mr-1 btn-link" href="#">Ver imagenes</a> </td>
             </tr>
           </tbody>
         </table>
