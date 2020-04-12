@@ -24,13 +24,6 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireModule } from '@angular/fire';
 
 const firebaseConfig = {
-    apiKey: "",
-    authDomain: "",
-    databaseURL: "",
-    projectId: "",
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: ""
   };
 
 
@@ -51,7 +44,7 @@ const firebaseConfig = {
         NgxSelectModule,
         TextMaskModule,
         AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyDdi-xpGtvmVhCXeafm4nJzQ9vqAgmYSWw'
+            apiKey: ''
         }),
         AngularFireModule.initializeApp(firebaseConfig),
         AngularFirestoreModule
