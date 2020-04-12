@@ -85,9 +85,10 @@ export class BusinessComponent implements OnInit {
         this.bsModalRef.content.onSaved = (resp) => {
           console.log("Retornando de modal", resp);
           this.bsModalRef.hide();
-          if (resp === 1) {
+          if (resp === 2 || resp === 3) {
+            let accionStrn = resp === 3 ? 'publicó':resp === 2? 'programó': 'creo';
             swal({
-              title: "Se publicó correctamente la oferta!",
+              title: "Se "+accionStrn+" correctamente la oferta!",
               text: "Desear ir a la sección de ofertas?",
               icon: "success",
               buttons: ["Cancelar", "Sí, ir a ofertas"]

@@ -19,6 +19,20 @@ import { EasypiechartDirective } from './directives/easypiechart/easypiechart.di
 import { VectormapDirective } from './directives/vectormap/vectormap.directive';
 import { ColorsService } from './colors/colors.service';
 import { NowDirective } from './directives/now/now.directive';
+import { AgmCoreModule } from '@agm/core';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireModule } from '@angular/fire';
+
+const firebaseConfig = {
+    apiKey: "",
+    authDomain: "",
+    databaseURL: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: ""
+  };
+
 
 // https://angular.io/styleguide#!#04-10
 @NgModule({
@@ -35,7 +49,12 @@ import { NowDirective } from './directives/now/now.directive';
         TabsModule.forRoot(),
         TimepickerModule.forRoot(),
         NgxSelectModule,
-        TextMaskModule
+        TextMaskModule,
+        AgmCoreModule.forRoot({
+            apiKey: 'AIzaSyDdi-xpGtvmVhCXeafm4nJzQ9vqAgmYSWw'
+        }),
+        AngularFireModule.initializeApp(firebaseConfig),
+        AngularFirestoreModule
     ],
     providers: [
         ColorsService
@@ -68,7 +87,10 @@ import { NowDirective } from './directives/now/now.directive';
         VectormapDirective,
         TimepickerModule,
         NgxSelectModule,
-        TextMaskModule
+        TextMaskModule,
+        AgmCoreModule,
+        AngularFireModule,
+        AngularFirestoreModule
     ]
 })
 

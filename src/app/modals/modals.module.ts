@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { AgmCoreModule } from '@agm/core';
 import { FileUploadModule } from 'ng2-file-upload';
 import { SharedModule } from '../shared/shared.module';
 import { BusinessModalComponent } from './business-modal/business-modal.component';
@@ -9,10 +8,7 @@ import { PublishOfferComponent } from './publish-offer/publish-offer.component';
 @NgModule({
   imports: [
     SharedModule,
-    FileUploadModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'xxx'
-  })
+    FileUploadModule
   ],
   declarations: [BusinessModalComponent, OfferModalComponent, PublishOfferComponent],
   exports:[BusinessModalComponent],

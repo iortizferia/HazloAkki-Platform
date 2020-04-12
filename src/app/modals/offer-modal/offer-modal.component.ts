@@ -142,6 +142,15 @@ export class OfferModalComponent implements OnInit {
 
   }
 
+  eliminarImagen(index:number){
+    let imagen = this.imagenes[index];
+    this.imagenes.splice(index, 1);
+    this.uploader.queue.splice(index, 1); 
+    if(imagen.idImagen != null){
+      this.imgToDelete.push(imagen);
+    }  
+  }
+
   uploadImagen(idOferta: string) {
     let data = new FormData();
     console.log("Subiendo imagen")

@@ -1,7 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Location } from '../../../shared/models/map.model';
+import { BusinessService } from 'src/app/core/http/business/business.service';
 
-import { ColorsService } from '../../../shared/colors/colors.service';
+const firebaseConfig = {
+    apiKey: "AIzaSyDYjD6nimvnmscxUHADdQuvNdfYLXGKRDQ",
+    authDomain: "hazloakki-236304.firebaseapp.com",
+    databaseURL: "https://hazloakki-236304.firebaseio.com",
+    projectId: "hazloakki-236304",
+    storageBucket: "hazloakki-236304.appspot.com",
+    messagingSenderId: "231795037656",
+    appId: "1:231795037656:web:fc920ecd277959b3"
+};
+
+// Init Firebase
+import * as firebaseApp from 'firebase/app';
+firebaseApp.initializeApp(firebaseConfig);
+// Init GeoFireX
+import * as geofirex from 'geofirex';
+import { Observable } from 'rxjs';
+const geo = geofirex.init(firebaseApp);
+
 
 @Component({
     selector: 'app-dashboardv1',
@@ -10,96 +28,60 @@ import { ColorsService } from '../../../shared/colors/colors.service';
 })
 export class Dashboardv1Component implements OnInit {
 
-    sparkValues = [1,3,4,7,5,9,4,4,7,5,9,6,4];
-
-    easyPiePercent: number = 70;
-    pieOptions = {
-        animate: {
-            duration: 800,
-            enabled: true
+    location: Location = {
+        lat: 19.432608,
+        lng: -99.133208,
+        marker: {
+            lat: 19.432608,
+            lng: -99.133208,
+            draggable: true
         },
-        barColor: this.colors.byName('info'),
-        trackColor: 'rgba(200,200,200,0.4)',
-        scaleColor: false,
-        lineWidth: 10,
-        lineCap: 'round',
-        size: 145
+        country: "México",
+        zoom: 16
     };
 
-    sparkOptions1 = {
-        barColor: this.colors.byName('info'),
-        height: 30,
-        barWidth: '5',
-        barSpacing: '2'
-    };
+    businessIcon = { url: 'assets/img/business-marker.png', scaledSize: {height: 40, width: 40}};
+    points: Observable<any>;
+    radius : number = 1.0;
+    
 
-    sparkOptions2 = {
-        type: 'line',
-        height: 80,
-        width: '100%',
-        lineWidth: 2,
-        lineColor: this.colors.byName('purple'),
-        spotColor: '#888',
-        minSpotColor: this.colors.byName('purple'),
-        maxSpotColor: this.colors.byName('purple'),
-        fillColor: '',
-        highlightLineColor: '#fff',
-        spotRadius: 3,
-        resize: true
-    };
+    constructor(private businessService: BusinessService) {
 
-    splineHeight = 280;
-    splineData: any;
-    splineOptions = {
-        series: {
-            lines: {
-                show: false
-            },
-            points: {
-                show: true,
-                radius: 4
-            },
-            splines: {
-                show: true,
-                tension: 0.4,
-                lineWidth: 1,
-                fill: 0.5
-            }
-        },
-        grid: {
-            borderColor: '#eee',
-            borderWidth: 1,
-            hoverable: true,
-            backgroundColor: '#fcfcfc'
-        },
-        tooltip: true,
-        tooltipOpts: {
-            content: (label, x, y) => { return x + ' : ' + y; }
-        },
-        xaxis: {
-            tickColor: '#fcfcfc',
-            mode: 'categories'
-        },
-        yaxis: {
-            min: 0,
-            max: 150, // optional: use it for a clear represetation
-            tickColor: '#eee',
-            // position: ($scope.app.layout.isRTL ? 'right' : 'left'),
-            tickFormatter: (v) => {
-                return v/* + ' visitors'*/;
-            }
-        },
-        shadowSize: 0
-    };
-
-    constructor(public colors: ColorsService, public http: HttpClient) {
-        http.get('assets/server/chart/spline.json').subscribe(data => this.splineData = data);
     }
 
     ngOnInit() { }
 
-    colorByName(name) {
-        return this.colors.byName(name);
+
+    getBusiness(businessId: string) {
+        this.location.lat = 19.3304269;
+        this.location.lng = -99.1681734;
+        this.location.marker.lat = 19.3304269;
+        this.location.marker.lng = -99.1681734;
+        this.location.marker.draggable = true;
+        this.location.zoom = 16;
+    }
+
+    guardarUsuario() {
+        const users = geo.collection('users');
+        /*const point = geo.point(19.338370, -99.183942);
+        users.add({ name: 'Zenon', point: point.data });*/
+        users.setPoint('RtfQ5r89nmmWPCikIbZB','point',19.334406, -99.167927);//19.324069, -99.182604
+    }
+
+    verUsuarios() {
+        const users = geo.collection('users');
+        //users.data('ZhX8Lz0errQlCgcK3ca1').subscribe(data => console.log(data));        
+        const center = geo.point(this.location.lat, this.location.lng);
+        const field = "point";
+
+        this.points = users.within(center, this.radius, field);
+        users.within(center, this.radius, field).subscribe(data =>{
+            console.log(data);
+        });
+    }
+
+    trackByFn(_, doc) {
+        return doc.id;
     }
 
 }

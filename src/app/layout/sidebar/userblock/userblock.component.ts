@@ -14,7 +14,8 @@ export class UserblockComponent implements OnInit {
         private authService: AuthService) {
 
         this.user = {
-            picture: 'assets/img/user/02.jpg'
+            picture: 'assets/img/user/02.jpg',
+            nombre: "Sin nombre"
         };
     }
 
@@ -24,8 +25,11 @@ export class UserblockComponent implements OnInit {
     userBlockIsVisible() {
         this.authService.pupulate();
         let userAccout = this.authService.getCurrentUser();
-        this.user.nombre = userAccout.nombre;
-        return this.userblockService.getVisibility();
+        if(userAccout){
+            this.user.nombre = userAccout.nombre;
+            return this.userblockService.getVisibility();
+        }
+        return true;
     }
 
 }

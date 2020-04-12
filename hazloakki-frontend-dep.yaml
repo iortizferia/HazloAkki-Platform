@@ -11,6 +11,7 @@ spec:
     spec:
       containers:
       - name: hazloakki-platform
+        imagePullPolicy: Always
         image: iortizf/hazloakki-platform:1.0
         ports:
         - containerPort: 80
